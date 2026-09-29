@@ -1,0 +1,84 @@
+name: Product release
+run-name: product:${{ inputs.receipt_id }}
+on:
+  workflow_dispatch:
+    inputs:
+      project: {required: true, type: string}
+      commit: {required: true, type: string}
+      snapshot_digest: {required: true, type: string}
+      receipt_id: {required: true, type: string}
+      operation: {required: true, type: choice, options: [deploy, rollback]}
+      rollback_image: {required: false, type: string}
+      rollback_commit: {required: false, type: string}
+      rollback_digest: {required: false, type: string}
+permissions:
+  contents: read
+concurrency:
+  group: psycho-product-release
+  cancel-in-progress: false
+jobs:
+  build:
+    if: inputs.operation == 'deploy'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - run: python -m pip install httpx==0.28.1
+      - name: Build without deployment credentials
+        env:
+          RELEASE_PROJECT: ${{ inputs.project }}
+          RELEASE_COMMIT: ${{ inputs.commit }}
+          RELEASE_DIGEST: ${{ inputs.snapshot_digest }}
+          RELEASE_RECEIPT: ${{ inputs.receipt_id }}
+          RELEASE_ATTEMPT: ${{ github.run_attempt }}
+        run: python .github/product/build.py
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: product-image
+          path: |
+            image.tar
+            build.json
+          if-no-files-found: error
+          retention-days: 7
+  release:
+    needs: [build]
+    if: always() && (needs.build.result == 'success' || inputs.operation == 'rollback')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        if: inputs.operation == 'deploy'
+        with:
+          name: product-image
+      - name: Install verified flyctl
+        run: |
+          curl --fail --location --silent --show-error https://github.com/superfly/flyctl/releases/download/v0.4.102/flyctl_0.4.102_Linux_x86_64.tar.gz -o /tmp/flyctl.tgz
+          echo '94a7219201660d57705d6f92fc4a75199aa0c491c349325fd67dca0b43bc588e  /tmp/flyctl.tgz' | sha256sum --check
+          tar -xzf /tmp/flyctl.tgz -C /usr/local/bin flyctl
+          python -m pip install httpx==0.28.1
+      - name: Release exact built image
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+          RELEASE_PROJECT: ${{ inputs.project }}
+          RELEASE_COMMIT: ${{ inputs.commit }}
+          RELEASE_DIGEST: ${{ inputs.snapshot_digest }}
+          RELEASE_RECEIPT: ${{ inputs.receipt_id }}
+          RELEASE_OPERATION: ${{ inputs.operation }}
+          RELEASE_ATTEMPT: ${{ github.run_attempt }}
+          ROLLBACK_IMAGE: ${{ inputs.rollback_image }}
+          ROLLBACK_COMMIT: ${{ inputs.rollback_commit }}
+          ROLLBACK_DIGEST: ${{ inputs.rollback_digest }}
+        run: python .github/product/release.py
+      - name: Preserve structured result
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: product-result
+          path: result.json
+          if-no-files-found: error
+          retention-days: 90
