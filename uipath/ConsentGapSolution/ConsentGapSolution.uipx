@@ -1,0 +1,12 @@
+{
+  "DocVersion": "1.0.0",
+  "StudioMinVersion": "2025.10.0",
+  "SolutionId": "95331b64-9401-483d-9aed-6de6a472f506",
+  "Projects": [
+    {
+      "Type": "Flow",
+      "ProjectRelativePath": "ConsentGap/project.uiproj",
+      "Id": "61b8af99-cef4-456e-a29a-403e8380b7ad"
+    }
+  ]
+}

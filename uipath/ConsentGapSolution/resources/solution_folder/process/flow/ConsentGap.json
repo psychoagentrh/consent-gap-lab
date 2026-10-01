@@ -1,0 +1,38 @@
+{
+  "docVersion": "1.0.0",
+  "resource": {
+    "name": "ConsentGap",
+    "kind": "process",
+    "type": "flow",
+    "apiVersion": "orchestrator.uipath.com/v1",
+    "projectKey": "61b8af99-cef4-456e-a29a-403e8380b7ad",
+    "dependencies": [
+      {
+        "kind": "package",
+        "name": "ConsentGap"
+      }
+    ],
+    "runtimeDependencies": [],
+    "folders": [
+      {
+        "fullyQualifiedName": "solution_folder"
+      }
+    ],
+    "spec": {
+      "type": "Flow",
+      "name": "ConsentGap",
+      "package": {
+        "key": "814c672d-4030-48ee-b92e-35bc1ac5085a"
+      },
+      "inputArguments": "{}",
+      "targetFrameworkValue": "Portable",
+      "retentionAction": "Delete",
+      "retentionPeriod": 30,
+      "staleRetentionAction": "Delete",
+      "staleRetentionPeriod": 180
+    },
+    "locks": [],
+    "key": "be501ee8-aebe-447c-95ac-a3f4faaf1c72",
+    "files": []
+  }
+}

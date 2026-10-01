@@ -1,0 +1,22 @@
+{
+  "docVersion": "1.0.0",
+  "resource": {
+    "name": "ConsentGap",
+    "kind": "package",
+    "apiVersion": "orchestrator.uipath.com/v1",
+    "projectKey": "61b8af99-cef4-456e-a29a-403e8380b7ad",
+    "dependencies": [],
+    "runtimeDependencies": [],
+    "folders": [
+      {
+        "fullyQualifiedName": "solution_folder"
+      }
+    ],
+    "spec": {
+      "name": "ConsentGap"
+    },
+    "locks": [],
+    "key": "814c672d-4030-48ee-b92e-35bc1ac5085a",
+    "files": []
+  }
+}
