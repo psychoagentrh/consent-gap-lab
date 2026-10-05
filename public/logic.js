@@ -3,6 +3,14 @@ export const cases = Object.freeze({
   bounded: { title:'Swap specimen B', action:'Swap 20 synthetic TEST for 1 synthetic DEMO', button:'Approve 20 TEST', request:'Token spending approval', scope:'20 TEST allowance', aftermath:'This fixture grants a bounded token allowance. It is still a separate permission, not proof that the swap executed.', note:'The amount matches, but the approval is not the swap.', safety:'Verify spender, chain, amount, and the later swap confirmation separately.', expectation:'Up to 20 TEST', gap:'Approval ≠ swap' }
 });
 export function chooseCase(id) { return Object.hasOwn(cases, id) ? id : 'unlimited'; }
+// The read-only observation endpoint and teaching cards share this source.
+export function specimen(id) {
+ if (!Object.hasOwn(cases, id)) throw new RangeError('Unknown specimen');
+ return { schema:'consent-gap/v1', synthetic:true, case:id, button:cases[id].button,
+  requestedAmount:20, permissionType:'token-allowance',
+  allowanceType:id === 'unlimited' ? 'unlimited' : 'exact',
+  allowanceAmount:id === 'unlimited' ? null : 20, swapExecuted:false };
+}
 export function reveal(id, choice) {
  const selected = chooseCase(id);
  const c = cases[selected];

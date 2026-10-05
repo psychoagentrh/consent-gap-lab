@@ -1,0 +1,15 @@
+{
+  "workflows": [
+    {
+      "id": "consent-observation",
+      "package": "uipath/packages/Psycho.ConsentGap.flow.Flow.1.0.0.nupkg",
+      "inputs": {
+        "specimenCase": {
+          "type": "string",
+          "enum": ["unlimited", "bounded"]
+        }
+      },
+      "outputs": ["specimenCaseObserved", "scopeExceedsButton", "approvalIsSwap", "verdict", "fixtureSchema", "payloadDigest", "observedAt", "method"]
+    }
+  ]
+}

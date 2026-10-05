@@ -2,6 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import http from 'node:http';
 import { app } from '../server.js';
+import { createHash } from 'node:crypto';
+import { specimen } from '../public/logic.js';
 
 const server = http.createServer(app);
 await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
@@ -22,6 +24,22 @@ test('health endpoint and HEAD work', async () => {
   const head = await fetch(base + '/', {method: 'HEAD'});
   assert.equal(head.status, 200);
   assert.equal(await head.text(), '');
+});
+test('read-only specimens have deterministic digests and bounded case selection', async () => {
+  for (const id of ['unlimited', 'bounded']) {
+    const response = await fetch(base + '/api/specimens/' + id);
+    assert.equal(response.status, 200);
+    assert.equal(response.headers.get('cache-control'), 'no-store');
+    const expected = specimen(id);
+    assert.deepEqual(await response.json(), { ...expected, payloadDigest:createHash('sha256').update(JSON.stringify(expected)).digest('hex') });
+    const head = await fetch(base + '/api/specimens/' + id, { method:'HEAD' });
+    assert.equal(head.status, 200);
+    assert.equal(await head.text(), '');
+    assert.equal((await fetch(base + '/api/specimens/' + id, { method:'POST' })).status, 405);
+  }
+  for (const id of ['unknown', 'https://example.com', 'unlimited/extra']) {
+    assert.equal((await fetch(base + '/api/specimens/' + id)).status, 404);
+  }
 });
 test('no visitor-triggered jobs and no accidental file exposure', async () => {
   const post = await fetch(base + '/private/product/runs', {method:'POST'});
