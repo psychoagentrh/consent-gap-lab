@@ -11,7 +11,7 @@ test.after(() => server.close());
 const base = `http://127.0.0.1:${server.address().port}`;
 
 test('demo and scripts available with protective policy', async () => {
-  for (const path of ['/', '/app.js', '/logic.js', '/style.css', '/inspect.html', '/inspect.css', '/inspect.js', '/approval.js']) {
+  for (const path of ['/', '/app.js', '/logic.js', '/style.css', '/inspect.html', '/inspect.css', '/inspect.js', '/approval.js', '/evidence.html', '/evidence.css', '/evidence.js', '/evidence-logic.js', '/owner-observations.json']) {
     const response = await fetch(base + path);
     assert.equal(response.status, 200, path);
     assert.match(response.headers.get('content-security-policy'), /default-src 'self'/);

@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Explore two dated, redacted UiPath owner observations of synthetic approvals. Compare their payload digests with the current teaching fixtures, locally."><title>Consent Gap Lab | Owner-run evidence</title><link rel="stylesheet" href="/style.css"><link rel="stylesheet" href="/evidence.css"></head>
+<body>
+<header><a class="brand" href="/">✳ PSYCHO <span>/ FIELD LAB 001</span></a><a class="source" href="/?view=compare#comparison">COMPARE PERMISSIONS ↗</a></header>
+<main>
+<section class="intro"><p class="eyebrow">Two historical owner runs / 2026-10-06</p><h1>What ran.<br><em>What it proves.</em></h1><p class="dek">UiPath Maestro read our two invented approval fixtures over HTTP. Both runs succeeded. Neither used a browser, connected a wallet or executed a swap.</p><div class="status">REDACTED OWNER EVIDENCE <span>Not a live test or independent attestation</span></div></section>
+<section class="evidence" aria-labelledby="evidence-heading">
+<h2 id="evidence-heading">Same button. Two observations.</h2>
+<p>Choose an input to read its published output. A local SHA-256 check compares the historical payload digest with this release's teaching data. It starts no Cloud job.</p>
+<div class="tabs" role="group" aria-label="Published observation"><button type="button" data-observation="unlimited" aria-pressed="true" disabled>A / Unlimited</button><button type="button" data-observation="bounded" aria-pressed="false" disabled>B / Bounded</button></div>
+<p id="load-status" role="status" aria-live="polite">Loading the published observations…</p><button type="button" id="retry" hidden>Retry loading evidence</button>
+<article id="observation" hidden>
+<h3 id="observation-title"></h3><p><a id="observation-link">Link to this observation ↗</a></p><div class="evidence-grid">
+<div><dl><dt>Observed at (UTC)</dt><dd><time id="observed-at"></time></dd><dt>Permission exceeds the 20 TEST button?</dt><dd id="scope"></dd><dt>Did the approval execute a swap?</dt><dd>No. Approval is a separate step.</dd><dt>Verdict returned by the Flow</dt><dd id="verdict"></dd><dt>Observation method</dt><dd id="method"></dd><dt>Returned fixture schema</dt><dd id="fixture-schema"></dd></dl></div>
+<div><h4>Compare with this release's fixture</h4><p id="digest-status" role="status" aria-live="polite"></p><p class="caveat">A match links these teaching bytes to the published output. It does not authenticate a UiPath job, audit a token, prove a wallet request safe or re-test the current app. The JSON serialization and field order are part of this digest.</p><dl><dt>Published payload SHA-256</dt><dd><code id="observed-digest"></code></dd><dt>Locally computed fixture SHA-256</dt><dd><code id="current-digest"></code></dd></dl></div>
+</div></article>
+<section id="provenance" hidden><h3>Revision and limits</h3><dl><dt>Tested workspace / Flow revision</dt><dd><code id="tested-revision"></code></dd><dt>Published source snapshot for that Flow</dt><dd><a id="source-link">Inspect the exact Flow source ↗</a><br><code id="source-revision"></code></dd></dl><p id="provenance-note"></p><p id="redaction-note"></p></section>
+<noscript><p>The explorer needs JavaScript; the <a href="/owner-observations.json">redacted JSON</a> and <a href="/?view=compare#comparison">teaching comparison</a> remain available. No visitor-triggered UiPath Cloud runs.</p></noscript>
+<div class="inspection-note"><h3>Useful proof. Narrow scope.</h3><p>These are observations of owned synthetic JSON specimens at their stated times. They do not verify the newer comparison or calldata inspector, a live wallet UI, token behavior or any future request. Public Cloud execution remains disabled. The UiPath component is the owner-controlled observation path, not the visitor interaction.</p></div>
+<p><a href="/owner-observations.json">Read / save the redacted JSON ↗</a> · <a href="/?view=compare#comparison">Compare the permissions ↗</a> · <a href="https://github.com/psychoagentrh/consent-gap-lab#reproduce-the-uipath-flow-in-your-own-tenant">Run your own copy ↗</a></p>
+</section></main><footer><strong>Consent Gap Lab</strong><span>Historical synthetic observations. No wallet, upload or Cloud job.</span></footer>
+<script type="module" src="/evidence.js"></script>
+</body></html>

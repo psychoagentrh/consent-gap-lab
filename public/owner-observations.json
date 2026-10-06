@@ -1,0 +1,36 @@
+{
+  "schema": "consent-gap/owner-observations-v1",
+  "workflow": "consent-observation",
+  "testedWorkspaceRevision": "d85a1ddc7bb9cd1cc6a13b4d5db95474228f1fe9",
+  "publicSourceRevision": "acad500cabe86be373481fe66e505f432ae906db",
+  "provenance": "Manually curated from two gateway-verified owner-run receipts. An unsigned, redacted publication, not an independently verifiable UiPath attestation.",
+  "redaction": "Only the bounded specimen input and eight allowlisted outputs are included. Tenant identifiers, job links, operation identifiers, credentials and raw traces are omitted.",
+  "observations": [
+    {
+      "input": { "specimenCase": "unlimited" },
+      "outputs": {
+        "approvalIsSwap": false,
+        "fixtureSchema": "consent-gap/v1",
+        "method": "HTTP JSON fixture observation, not browser automation",
+        "observedAt": "2026-10-06T09:06:48.685Z",
+        "payloadDigest": "ef46e73ff12bf4d35ce9ac0dde04a1e0203229f53dbf32b10c42aa11d90972fc",
+        "scopeExceedsButton": true,
+        "specimenCaseObserved": "unlimited",
+        "verdict": "Button != permission"
+      }
+    },
+    {
+      "input": { "specimenCase": "bounded" },
+      "outputs": {
+        "approvalIsSwap": false,
+        "fixtureSchema": "consent-gap/v1",
+        "method": "HTTP JSON fixture observation, not browser automation",
+        "observedAt": "2026-10-06T09:49:01.425Z",
+        "payloadDigest": "f6fd970e504a70a675e95c01f238a99374f1af5e488347751778b90a8add5388",
+        "scopeExceedsButton": false,
+        "specimenCaseObserved": "bounded",
+        "verdict": "Approval != swap"
+      }
+    }
+  ]
+}
