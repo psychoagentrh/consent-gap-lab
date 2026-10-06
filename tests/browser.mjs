@@ -11,8 +11,11 @@ try {
   for (const width of [1280, 390]) {
     const page = await browser.newPage({viewport:{width, height:850}, deviceScaleFactor:1});
     const errors = [];
+    const requests = [];
+    page.on('request', request => requests.push({url:request.url(),method:request.method()}));
     page.on('pageerror', error => errors.push(error.message));
     await page.goto(base);
+    assert.equal(await page.locator('#comparison').isVisible(), false);
     assert.doesNotMatch(await page.locator('.tabs, .fake-app').allInnerTexts().then(parts => parts.join(' ')), /Unlimited|Exact amount|allowance/i);
     await page.getByRole('button', {name:'Yes, it could'}).click();
     assert.match(await page.locator('#result').innerText(), /Unlimited TEST allowance/);
@@ -22,7 +25,7 @@ try {
     await page.getByRole('button', {name:'Copied ✓'}).waitFor();
     assert.equal(await page.evaluate(() => navigator.clipboard.readText()), page.url());
     await page.reload();
-    assert.match(await page.locator('#result').innerText(), /You spotted it/);
+    assert.match(await page.locator('#result').innerText(), /Correct guess/);
     await page.screenshot({path:`/tmp/consent-gap-${width}-unlimited.png`,fullPage:true});
     await page.getByRole('button', {name:'02 / Specimen B'}).click();
     await page.getByRole('button', {name:'Yes, it could'}).click();
@@ -30,12 +33,53 @@ try {
     assert.match(await page.locator('#result').innerText(), /Surprise/);
     await page.getByRole('button', {name:'Try another prediction'}).click();
     await page.getByRole('button', {name:'No, capped at 20 TEST'}).click();
-    assert.match(await page.locator('#result').innerText(), /You spotted it/);
+    assert.match(await page.locator('#result').innerText(), /Correct guess/);
     await page.screenshot({path:`/tmp/consent-gap-${width}.png`, fullPage:true});
     const metrics = await page.evaluate(() => ({documentWidth:document.documentElement.scrollWidth, viewportWidth:innerWidth, resultVisible:!document.querySelector('#result').hidden, heading:document.querySelector('h1').getBoundingClientRect().width}));
     assert.ok(metrics.documentWidth <= width, `horizontal overflow at ${width}: ${JSON.stringify(metrics)}`);
     assert.deepEqual(errors, []);
     console.log(`viewport ${width}: ${JSON.stringify(metrics)}, screenshot /tmp/consent-gap-${width}.png`);
+    await page.getByRole('button', {name:'Compare both permissions', exact:true}).click();
+    assert.equal(await page.locator('#comparison').isVisible(), true);
+    assert.equal(await page.evaluate(() => document.activeElement.id), 'comparison-title');
+    assert.match(page.url(), /\?view=compare#comparison$/);
+    assert.equal(await page.locator('#comparison-cards article').count(), 2);
+    const comparisonText = await page.locator('#comparison-cards').innerText();
+    assert.match(comparisonText, /Unlimited TEST allowance/);
+    assert.match(comparisonText, /20 TEST allowance/);
+    assert.equal((comparisonText.match(/Approve 20 TEST/g) || []).length, 2);
+    assert.equal((comparisonText.match(/No\. Approval is a separate permission\./g) || []).length, 2);
+    const columns = await page.locator('#comparison-cards').evaluate(element => getComputedStyle(element).gridTemplateColumns.split(' ').length);
+    assert.equal(columns, width > 760 ? 2 : 1);
+    assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
+    const comparisonPath = process.env.CAPTURE_COMPARE_DEMO === '1' ? `public/demo/comparison-${width}.png` : `/tmp/consent-gap-comparison-${width}.png`;
+    await page.locator('#comparison').screenshot({path:comparisonPath});
+    await page.getByRole('button', {name:'Copy comparison link'}).click();
+    await page.getByRole('button', {name:'Copied ✓'}).waitFor();
+    assert.equal(await page.evaluate(() => navigator.clipboard.readText()), page.url());
+    await page.reload();
+    assert.equal(await page.locator('#comparison').isVisible(), true);
+    assert.equal(await page.locator('#result').isVisible(), false);
+    assert.equal(await page.locator('#open-comparison').getAttribute('aria-expanded'), 'true');
+    await page.evaluate(() => Object.defineProperty(navigator.clipboard, 'writeText', {configurable:true,value:async () => { throw new Error('Clipboard unavailable in test'); }}));
+    await page.getByRole('button', {name:'Copy comparison link'}).click();
+    await page.getByRole('button', {name:'Copy unavailable. Use address bar.'}).waitFor();
+    assert.match(page.url(), /\?view=compare#comparison$/);
+    await page.getByRole('button', {name:'Back to a fresh prediction'}).click();
+    assert.equal(await page.locator('#comparison').isVisible(), false);
+    assert.equal(await page.locator('#choices').isVisible(), true);
+    assert.equal(await page.locator('#result').isVisible(), false);
+    assert.equal(await page.evaluate(() => document.activeElement.id), 'open-comparison');
+    await page.keyboard.press('Enter');
+    assert.equal(await page.locator('#comparison').isVisible(), true);
+    assert.equal(await page.evaluate(() => document.activeElement.id), 'comparison-title');
+    await page.getByRole('button', {name:'02 / Specimen B'}).click();
+    assert.equal(await page.locator('#comparison').isVisible(), false);
+    assert.match(page.url(), /\?case=bounded$/);
+    assert.ok(requests.every(request => request.method === 'GET' && new URL(request.url).origin === new URL(base).origin));
+    assert.ok(requests.every(request => !/\/(runs|jobs|private)\b/.test(new URL(request.url).pathname)));
+    assert.deepEqual(errors, []);
+    console.log(`viewport ${width}: comparison cards, responsive columns, direct-link reload, clipboard success/failure, keyboard focus and reset passed; ${requests.length} same-origin GETs, no job routes; capture ${comparisonPath}`);
     await page.close();
   }
   const page = await browser.newPage();
@@ -43,17 +87,24 @@ try {
   assert.equal(await page.locator('#choices').isVisible(), true);
   assert.equal(await page.locator('[data-case=unlimited]').getAttribute('aria-pressed'), 'true');
   console.log('malformed share URL falls back to a fresh synthetic case');
+  await page.goto(base + '/?view=wallet&case=bad&answer=wallet');
+  assert.equal(await page.locator('#comparison').isVisible(), false);
+  assert.equal(await page.locator('#choices').isVisible(), true);
   await page.setViewportSize({width:390,height:850});
   await page.goto(base + '/demo.html');
-  assert.equal(await page.locator('.demo-captures img').count(), 2);
-  await page.waitForFunction(() => [...document.images].every(img => img.complete && img.naturalWidth > 0));
+  assert.equal(await page.locator('.demo-captures img').count(), 4);
+  for (const image of await page.locator('.demo-captures img').all()) {
+    await image.scrollIntoViewIfNeeded();
+    await image.evaluate(img => img.decode());
+  }
+  assert.ok(await page.evaluate(() => [...document.images].every(img => img.complete && img.naturalWidth > 0)));
   assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
-  for (const route of ['/demo/1280-unlimited.png','/demo/1280-bounded.png','/demo/390-unlimited.png','/demo/390-bounded.png']) {
+  for (const route of ['/demo/1280-unlimited.png','/demo/1280-bounded.png','/demo/390-unlimited.png','/demo/390-bounded.png','/demo/comparison-1280.png','/demo/comparison-390.png']) {
     const response = await page.request.get(base + route);
     assert.equal(response.status(), 200);
     assert.match(response.headers()['content-type'], /image\/png/);
   }
-  console.log('authentic gallery loads at mobile width; all four PNG captures served');
+  console.log('authentic gallery loads at mobile width; four rendered images decoded and all six PNG captures served');
   await page.close();
 } finally {
   await browser.close();

@@ -17,3 +17,18 @@ export function reveal(id, choice) {
  if (!['one', 'future', 'unsure'].includes(choice)) throw new RangeError('Choose a valid prediction');
  return { ...c, choice, correct: choice === (selected === 'unlimited' ? 'future' : 'one'), caveat: selected === 'bounded' ? 'Even an exact approval is not a completed swap.' : 'This synthetic example does not assert any real application behaves this way.' };
 }
+
+// Comparison is entirely local. It does not observe a wallet or start a Cloud job.
+export function comparePermissions() {
+ return Object.keys(cases).map(id => {
+  const c = cases[id];
+  const request = specimen(id);
+  return { id, title:c.title, rows:[
+   { label:'Displayed button', value:request.button, different:false },
+   { label:'Requested permission', value:c.request, different:false },
+   { label:'Allowance', value:c.scope, different:true },
+   { label:'Could exceed the displayed 20 TEST?', value:request.allowanceType === 'unlimited' ? 'Yes, within the granted allowance' : 'No, this approval caps spending at 20 TEST', different:true },
+   { label:'Does approval execute the swap?', value:request.swapExecuted ? 'Yes' : 'No. Approval is a separate permission.', different:false }
+  ] };
+ });
+}

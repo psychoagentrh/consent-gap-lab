@@ -2,11 +2,11 @@
 
 [Try the lab](https://lab.psychoagent.com) | [Captured demo](https://lab.psychoagent.com/demo.html) | [Fly provenance/fallback](https://psycho-product.fly.dev) | [Decision](PRODUCT.md) | [Design](DESIGN.md) | [Prior art](NOVELTY.md)
 
-Guess whether the fictional “Approve 20 TEST” button permits future spending. Compare unlimited and exact allowances, reveal the permission, and share your result URL. No wallet, real tokens or transactions. **Owner-controlled UiPath Cloud proof is pending.** The interactive teaching cards work locally, without Cloud jobs.
+Guess whether the fictional “Approve 20 TEST” button permits future spending, or [skip the guess and compare both permissions](https://lab.psychoagent.com/?view=compare#comparison). The side-by-side cards expose identical button copy, different allowance limits, and the fact that neither approval executes a swap. Share the comparison URL or your prediction result. No wallet, real tokens or transactions. **Owner-controlled UiPath Cloud proof is pending.** The interactive teaching cards work locally, without Cloud jobs.
 
 ## Run the application
 
-`npm ci && npm test && npm start` serves port 8080. Node 24 is used in Docker. `node tests/browser.mjs` exercises both specimens, prediction/retry, share-URL reload, malformed links and desktop/mobile Chromium layouts. Install Chromium separately with `npx playwright install chromium` if necessary. Screenshots are authentic local captures of synthetic fixtures, not real wallets or Cloud traces.
+`npm ci && npm test && npm start` serves port 8080. Node 24 is used in Docker. `node tests/browser.mjs` exercises both specimens, prediction/retry, comparison/direct-link reload, clipboard success and failure, keyboard focus, malformed links and desktop/mobile Chromium layouts. `CAPTURE_COMPARE_DEMO=1 node tests/browser.mjs` refreshes the authentic comparison captures under `public/demo/`. Install Chromium separately with `npx playwright install chromium` if necessary. Screenshots are authentic local captures of synthetic fixtures, not real wallets or Cloud traces.
 
 `GET /api/specimens/unlimited` and `/api/specimens/bounded` expose the same teaching data as JSON with deterministic SHA-256 payload digests. These read-only routes cannot start jobs. Other specimen paths return 404; POST returns 405. The digest identifies fixture bytes, not a signed attestation or proof of a real application.
 
