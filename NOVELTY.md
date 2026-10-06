@@ -11,4 +11,6 @@ Primary references to recheck before implementing the UiPath journey: [AgentHack
 | Well Tested | Browser journey planning, screenshots, shareable proof and recurring health | Focus on one semantic consent gap, with user prediction and redacted dated evidence, rather than generic journey coverage. |
 | AgentTrial | Sealed trials, deterministic assertions and receipts for agent claims | A wallet-user education interaction focused on what token approval permits, not general agent verification. |
 
-Current delivery only implements the synthetic interaction, not the proposed UiPath evidence mechanism. A generic runner with screenshots would not differentiate it. Consult current source again when implementing the real journey; descriptions can change.
+2026-10-06 extension: a local, strict ERC-20 approval calldata decoder lets visitors apply the synthetic lesson to their own request without wallet access, metadata guesses or uploads. ABI decoding is established functionality and not a novelty claim. The contribution here is the consent-specific teaching interaction plus practical follow-through, with the proposed revision-bound observation evidence still unfinished. No competitor absence or first-ever claim is inferred.
+
+Current delivery implements the synthetic interaction and local decoder, not the proposed UiPath evidence mechanism. A generic runner with screenshots would not differentiate it. Consult current source again when implementing the real journey; descriptions can change.

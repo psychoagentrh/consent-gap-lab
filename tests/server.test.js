@@ -11,12 +11,19 @@ test.after(() => server.close());
 const base = `http://127.0.0.1:${server.address().port}`;
 
 test('demo and scripts available with protective policy', async () => {
-  for (const path of ['/', '/app.js', '/logic.js', '/style.css']) {
+  for (const path of ['/', '/app.js', '/logic.js', '/style.css', '/inspect.html', '/inspect.css', '/inspect.js', '/approval.js']) {
     const response = await fetch(base + path);
     assert.equal(response.status, 200, path);
     assert.match(response.headers.get('content-security-policy'), /default-src 'self'/);
     assert.ok((await response.text()).length > 10);
   }
+});
+test('inspector refuses network connections and form submission at policy level', async () => {
+  const response = await fetch(base + '/inspect.html');
+  assert.match(response.headers.get('content-security-policy'), /connect-src 'none'/);
+  assert.match(response.headers.get('content-security-policy'), /form-action 'none'/);
+  assert.match(response.headers.get('content-security-policy'), /object-src 'none'/);
+  assert.equal(response.headers.get('referrer-policy'), 'no-referrer');
 });
 test('health endpoint and HEAD work', async () => {
   const health = await fetch(base + '/healthz');

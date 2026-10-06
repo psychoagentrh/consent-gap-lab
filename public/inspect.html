@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#121a19"><meta name="referrer" content="no-referrer"><title>Approval request inspector | Consent Gap Lab</title><meta name="description" content="Decode an ERC-20 approval request locally. See the spender and precise allowance without connecting a wallet."><link rel="stylesheet" href="/style.css"><link rel="stylesheet" href="/inspect.css"></head>
+<body>
+<header><a class="brand" href="/">✳ PSYCHO <span>/ CONSENT GAP LAB</span></a><a class="source" href="https://github.com/psychoagentrh/consent-gap-lab">SOURCE ↗</a></header>
+<main class="inspector">
+<p class="eyebrow">READ THE REQUEST / NO WALLET NEEDED</p>
+<h1>What does this <em>approval allow?</em></h1>
+<p class="dek">Paste the transaction's hex data to read its spender and allowance. Or try an invented example first. Decoding happens in this browser, not on our server.</p>
+<div class="status">● LOCAL ABI DECODER <span>Not a safety verdict or UiPath Cloud evidence</span></div>
+<div class="inspect-grid">
+<section class="input-panel" aria-labelledby="input-title">
+<h2 id="input-title">Inspect the bytes.</h2>
+<p class="hint">Supports only the standard ERC-20 <code>approve(address,uint256)</code> layout. Copy the transaction's <strong>data</strong> field from your wallet's request details. Don't paste a seed phrase, private key, signature or transaction JSON.</p>
+<div class="example-buttons" role="group" aria-label="Invented approval examples"><button type="button" data-example="maximum">Example: max allowance</button><button type="button" data-example="bounded">Example: 20 tokens</button><button type="button" data-example="zero">Example: zero allowance</button></div>
+<p id="example-note" class="hint" hidden>Invented example. The repeated-1 spender address is not verified or recommended. Token decimals are assumed to be 18 for this example.</p>
+<form id="inspect-form" autocomplete="off">
+<label for="calldata">Approval calldata (hex)</label>
+<textarea id="calldata" rows="5" maxlength="512" spellcheck="false" autocapitalize="off" autocomplete="off" aria-describedby="data-help decode-error" placeholder="0x095ea7b3…"></textarea>
+<p id="data-help" class="hint">Exactly 68 bytes: selector, spender, amount. No wallet connection, RPC lookup, app persistence or upload. Pasted values are not added to the URL or shared links.</p>
+<label for="decimals">Token decimals, if you know them <span>(optional)</span></label>
+<input id="decimals" type="text" inputmode="numeric" maxlength="3" spellcheck="false" aria-describedby="decimal-help decode-error">
+<p id="decimal-help" class="hint">Blank means raw units only. We support 0–36 and never infer decimals, token name or chain. A wrong decimals value gives a wrong token amount.</p>
+<div class="inspect-actions"><button type="submit">Decode locally</button><button type="button" id="clear-data" class="plain">Clear form</button></div>
+<p id="decode-error" role="alert" hidden></p>
+</form>
+<noscript><p>JavaScript is required for local decoding. This form cannot submit data to the server.</p></noscript>
+</section>
+<section class="output-panel" aria-labelledby="approval-title">
+<h2 id="approval-title" tabindex="-1">The decoded request</h2>
+<p id="empty-result">Nothing decoded yet. This is a request interpretation, not a signed transaction, live allowance or confirmed outcome.</p>
+<div id="approval-result" hidden>
+<p id="allowance-label" class="allowance-label"></p>
+<dl id="approval-details"></dl>
+<p id="allowance-meaning"></p>
+<p class="warning">A matching selector does not prove the target is an ERC-20 token. ERC-721’s per-token <code>approve(address,uint256)</code> uses the same selector, but its second value is a token ID, not an allowance. Other contracts can also interpret these bytes differently. Verify the destination contract and token standard, chain and spender independently. The decoded address is lowercase, not checksum-verified.</p>
+<p class="warning">No contract call or transaction receipt was checked. Even a bounded amount is not a safe-spender verdict. Decoding an approval does not execute or confirm a swap.</p>
+<button type="button" id="copy-summary">Copy decoded summary</button>
+<p class="hint">This explicitly copies the decoded spender and amount to your clipboard. It does not upload them or create a public result link.</p>
+<p id="copy-status" role="status" aria-live="polite"></p>
+</div>
+</section>
+</div>
+<aside class="inspection-note"><h3>Know what is missing.</h3><p>Calldata alone cannot identify the chain, token contract, sender, token decimals, existing allowance or transaction success. Permit signatures, Permit2, NFT permissions and multicalls need different inspection tools. This inspector refuses other layouts rather than guessing.</p><p><a href="/?view=compare#comparison">Compare the two fictional buttons ↗</a> · <a href="/demo.html">Captured desktop/mobile demo ↗</a></p><p>Encoding references: <a href="https://eips.ethereum.org/EIPS/eip-20">ERC-20 standard</a> and <a href="https://docs.soliditylang.org/en/latest/abi-spec.html">Solidity ABI specification</a>. UiPath Cloud proof for the separate synthetic observation Flow is still pending.</p></aside>
+</main>
+<footer><strong>PSYCHO / CONSENT GAP LAB</strong><span>Independent experiment. Not affiliated with or endorsed by UiPath.</span></footer>
+<script type="module" src="/inspect.js"></script>
+</body></html>

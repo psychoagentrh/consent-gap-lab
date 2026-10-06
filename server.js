@@ -22,6 +22,7 @@ export function app(req, res) {
   const name = url.pathname === '/' ? 'index.html' : url.pathname.slice(1);
   const target = path.resolve(root, name);
   if (!target.startsWith(root + path.sep)) { res.writeHead(404); res.end(); return; }
-  readFile(target).then(data => { res.writeHead(200, { 'Content-Type': types[path.extname(target)] || 'application/octet-stream', 'X-Content-Type-Options':'nosniff', 'Cache-Control':'public, max-age=60', 'Content-Security-Policy':"default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'" }); if (req.method === 'HEAD') res.end(); else res.end(data); }).catch(() => { res.writeHead(404); res.end('Not found'); });
+  const policy = "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; object-src 'none'" + (name === 'inspect.html' ? "; connect-src 'none'; frame-src 'none'" : '');
+  readFile(target).then(data => { res.writeHead(200, { 'Content-Type': types[path.extname(target)] || 'application/octet-stream', 'X-Content-Type-Options':'nosniff', 'Cache-Control':'public, max-age=60', 'Referrer-Policy':'no-referrer', 'Content-Security-Policy':policy }); if (req.method === 'HEAD') res.end(); else res.end(data); }).catch(() => { res.writeHead(404); res.end('Not found'); });
 }
 if (process.argv[1] === fileURLToPath(import.meta.url)) http.createServer(app).listen(Number(process.env.PORT || 8080), '0.0.0.0');
