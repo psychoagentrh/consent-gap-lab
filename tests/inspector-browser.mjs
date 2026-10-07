@@ -21,6 +21,16 @@ try {
     const cleanURL = page.url();
     assert.equal(new URL(cleanURL).pathname, '/inspect.html');
     assert.equal(await page.locator('#approval-result').isVisible(), false);
+    const evidenceLink = page.getByRole('link', {name:'dated owner-controlled HTTP JSON observations'});
+    assert.equal(await evidenceLink.getAttribute('href'), '/evidence.html');
+    assert.match(await page.locator('.inspection-note').innerText(), /Those observations do not test this local decoder or a wallet journey/);
+    assert.doesNotMatch(await page.locator('body').innerText(), /proof[^.]*pending/i);
+    await evidenceLink.click();
+    await page.waitForLoadState('networkidle');
+    assert.equal(new URL(page.url()).pathname, '/evidence.html');
+    assert.match(await page.locator('.status').innerText(), /Not a live test or independent attestation/);
+    await page.goBack();
+    await page.waitForLoadState('networkidle');
     // Refuse all later network access: every interaction below must still work.
     const initialRequests = requests.length;
     await page.route('**/*', route => route.abort());
@@ -49,15 +59,15 @@ try {
     assert.ok(clipboard.includes(decodeApproval(approvalExamples.bounded).spender));
     assert.ok(clipboard.includes(decodeApproval(approvalExamples.bounded).rawAllowance));
     assert.doesNotMatch(clipboard, /calldata=|\?data=/);
-    await page.evaluate(() => Object.defineProperty(navigator.clipboard, 'writeText', {configurable:true,value:async () => {throw new Error('Clipboard denied');}}));
-    await page.getByRole('button', {name:'Copy decoded summary'}).click();
-    await page.getByText('Copy unavailable. Select the decoded text manually; no data was uploaded.', {exact:true}).waitFor();
     // Capture synthetic data only; never publish a visitor's pasted request.
     const columns = await page.locator('.inspect-grid').evaluate(el => getComputedStyle(el).gridTemplateColumns.split(' ').length);
     assert.equal(columns, width > 760 ? 2 : 1);
     assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
     const screenshot = process.env.CAPTURE_INSPECT_DEMO === '1' ? `public/demo/inspect-${width}.png` : `/tmp/consent-gap-inspect-${width}.png`;
     await page.screenshot({path:screenshot,fullPage:true});
+    await page.evaluate(() => Object.defineProperty(navigator.clipboard, 'writeText', {configurable:true,value:async () => {throw new Error('Clipboard denied');}}));
+    await page.getByRole('button', {name:'Copy decoded summary'}).click();
+    await page.getByText('Copy unavailable. Select the decoded text manually; no data was uploaded.', {exact:true}).waitFor();
     await page.locator('#decimals').fill('');
     assert.equal(await page.locator('#approval-result').isVisible(), false, 'editing invalidates stale result');
     await decode();
@@ -100,7 +110,7 @@ try {
     assert.deepEqual(errors, []);
     assert.ok(requests.every(req => req.method === 'GET' && new URL(req.url).origin === new URL(base).origin));
     assert.ok(requests.every(req => !/private\/product|runs|calldata=|095ea7b3/.test(req.url)));
-    console.log(JSON.stringify({width,columns,initialRequests,interactionRequests:requests.length-initialRequests,errors,screenshot,checks:'exact/max/zero, unknown decimals, strict refusal, edit invalidation, clipboard success/denial, keyboard/reset, privacy, no overflow'}));
+    console.log(JSON.stringify({width,columns,initialRequests,interactionRequests:requests.length-initialRequests,errors,screenshot,checks:'dated evidence link/boundary, exact/max/zero, unknown decimals, strict refusal, edit invalidation, clipboard success/denial, keyboard/reset, privacy, no overflow'}));
     await context.close();
   }
   // Without scripts, the fallback cannot submit pasted form data.
@@ -110,6 +120,7 @@ try {
   page.on('request', req => noScriptRequests.push(req.url()));
   await page.goto(base + '/inspect.html');
   await page.waitForLoadState('networkidle');
+  assert.equal(await page.getByRole('link', {name:'dated owner-controlled HTTP JSON observations'}).getAttribute('href'), '/evidence.html');
   const before = noScriptRequests.length;
   await page.locator('#calldata').fill(approvalExamples.bounded);
   await page.getByRole('button', {name:'Decode locally',exact:true}).click({noWaitAfter:true});

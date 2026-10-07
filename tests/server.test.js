@@ -25,6 +25,16 @@ test('inspector refuses network connections and form submission at policy level'
   assert.match(response.headers.get('content-security-policy'), /object-src 'none'/);
   assert.equal(response.headers.get('referrer-policy'), 'no-referrer');
 });
+test('local decoder links dated observations without claiming Cloud coverage', async () => {
+  const response = await fetch(base + '/inspect.html');
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /href="\/evidence\.html">dated owner-controlled HTTP JSON observations<\/a>/);
+  assert.match(html, /Those observations do not test this local decoder or a wallet journey/);
+  assert.match(html, /Public Cloud execution remains disabled/);
+  assert.doesNotMatch(html, /proof[^<.]*pending|#uipath-observation-status/i);
+  assert.equal((await fetch(base + '/evidence.html')).status, 200);
+});
 test('health endpoint and HEAD work', async () => {
   const health = await fetch(base + '/healthz');
   assert.deepEqual(await health.json(), {status: 'ok'});
