@@ -7,7 +7,13 @@ import { specimen } from './public/logic.js';
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), 'public');
 const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.json': 'application/json; charset=utf-8', '.svg': 'image/svg+xml', '.png': 'image/png' };
 export function app(req, res) {
-  const url = new URL(req.url, 'http://localhost');
+  let url;
+  try { url = new URL(req.url, 'http://localhost'); }
+  catch {
+    res.writeHead(400, { 'Content-Type':'text/plain; charset=utf-8', 'Cache-Control':'no-store', 'X-Content-Type-Options':'nosniff' });
+    res.end(req.method === 'HEAD' ? undefined : 'Bad request');
+    return;
+  }
   if (url.pathname === '/healthz') { res.writeHead(200, { 'Content-Type':'application/json' }); res.end(JSON.stringify({ status:'ok' })); return; }
   if (req.method !== 'GET' && req.method !== 'HEAD') { res.writeHead(405); res.end(); return; }
   if (url.pathname.startsWith('/api/specimens/')) {
