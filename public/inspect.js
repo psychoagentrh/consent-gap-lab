@@ -1,6 +1,9 @@
 import { decodeApproval, approvalExamples } from './approval.js';
 const $ = selector => document.querySelector(selector);
 let decoded = null;
+function comparisonText(comparison) {
+  return comparison.relation === 'equal' ? 'Matches the amount you entered' : 'Request is ' + comparison.relation + ' than your entered amount';
+}
 const meanings = {
   maximum:{label:'Maximum uint256 request', text:'This is the largest uint256 value, commonly used as an unlimited allowance by standard ERC-20 implementations. It is not a trust signal or proof that an allowance was granted.'},
   bounded:{label:'Bounded amount request', text:'For a standard ERC-20 contract, this requests an allowance of the amount shown, replacing the existing allowance. The spender may spend against it across multiple transfers. It is not a completed swap or a safety verdict.'},
@@ -13,18 +16,22 @@ function resetResult() {
   $('#approval-details').replaceChildren();
   $('#allowance-label').textContent = '';
   $('#allowance-meaning').textContent = '';
+  $('#amount-comparison').hidden = true;
+  $('#comparison-label').textContent = '';
+  $('#comparison-detail').textContent = '';
   $('#copy-status').textContent = '';
   $('#decode-error').hidden = true;
   $('#decode-error').textContent = '';
-  for (const field of ['calldata','decimals']) $('#' + field).removeAttribute('aria-invalid');
+  for (const field of ['calldata','decimals','claimed-amount']) $('#' + field).removeAttribute('aria-invalid');
 }
-for (const field of ['calldata','decimals']) {
+for (const field of ['calldata','decimals','claimed-amount']) {
   $('#' + field).addEventListener('input', () => { resetResult(); $('#example-note').hidden = true; });
 }
 document.querySelectorAll('[data-example]').forEach(button => button.addEventListener('click', () => {
   resetResult();
   $('#calldata').value = approvalExamples[button.dataset.example];
   $('#decimals').value = '18';
+  $('#claimed-amount').value = button.dataset.example === 'zero' ? '0' : '20';
   $('#example-note').hidden = false;
   $('#calldata').focus();
 }));
@@ -38,7 +45,7 @@ $('#inspect-form').addEventListener('submit', event => {
   event.preventDefault();
   resetResult();
   try {
-    decoded = decodeApproval($('#calldata').value, $('#decimals').value);
+    decoded = decodeApproval($('#calldata').value, $('#decimals').value, $('#claimed-amount').value);
   } catch (error) {
     $('#decode-error').textContent = error.message;
     $('#decode-error').hidden = false;
@@ -63,6 +70,11 @@ $('#inspect-form').addEventListener('submit', event => {
   }
   $('#allowance-label').textContent = meanings[decoded.category].label;
   $('#allowance-meaning').textContent = meanings[decoded.category].text;
+  if (decoded.comparison) {
+    $('#comparison-label').textContent = comparisonText(decoded.comparison);
+    $('#comparison-detail').textContent = 'Entered amount: ' + decoded.comparison.enteredAmount + ' tokens. Exact difference: ' + decoded.comparison.differenceAmount + ' tokens (using supplied decimals).';
+    $('#amount-comparison').hidden = false;
+  }
   $('#empty-result').hidden = true;
   $('#approval-result').hidden = false;
   $('#approval-title').focus();
@@ -78,6 +90,11 @@ $('#copy-summary').addEventListener('click', async () => {
     'Request type: ' + meanings[result.category].label,
     'Decimals: ' + (result.decimals === null ? 'unknown' : result.decimals + ' (supplied, not verified)'),
     ...(result.displayAmount === null ? [] : ['Amount using supplied decimals: ' + result.displayAmount + ' tokens (identity unknown)']),
+    ...(result.comparison ? [
+      'Button amount entered by visitor (not verified): ' + result.comparison.enteredAmount + ' tokens',
+      comparisonText(result.comparison) + '. Exact difference: ' + result.comparison.differenceAmount + ' tokens (using supplied decimals).',
+      'Comparison is numerical only. Button text, decimals and standard ERC-20 behavior are not verified. A match or smaller request is not a safety verdict or completed purchase.'
+    ] : []),
     'Token standard unverified: ERC-721 uses the same selector but its second value is a token ID, not an allowance.',
     'Contract behavior, chain, token, live allowance and receipt not checked. No transaction executed.',
     'https://lab.psychoagent.com/inspect.html'

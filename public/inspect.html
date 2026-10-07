@@ -6,14 +6,14 @@
 <main class="inspector">
 <p class="eyebrow">READ THE REQUEST / NO WALLET NEEDED</p>
 <h1>What does this <em>approval allow?</em></h1>
-<p class="dek">Paste the transaction's hex data to read its spender and allowance. Or try an invented example first. Decoding happens in this browser, not on our server.</p>
+<p class="dek">Paste the transaction's hex data to read its spender and allowance. Add the amount shown by the button to compare them, or try an invented example. All calculations stay in this browser.</p>
 <div class="status">● LOCAL ABI DECODER <span>Not a safety verdict or UiPath Cloud evidence</span></div>
 <div class="inspect-grid">
 <section class="input-panel" aria-labelledby="input-title">
 <h2 id="input-title">Inspect the bytes.</h2>
 <p class="hint">Supports only the standard ERC-20 <code>approve(address,uint256)</code> layout. Copy the transaction's <strong>data</strong> field from your wallet's request details. Don't paste a seed phrase, private key, signature or transaction JSON.</p>
 <div class="example-buttons" role="group" aria-label="Invented approval examples"><button type="button" data-example="maximum">Example: max allowance</button><button type="button" data-example="bounded">Example: 20 tokens</button><button type="button" data-example="zero">Example: zero allowance</button></div>
-<p id="example-note" class="hint" hidden>Invented example. The repeated-1 spender address is not verified or recommended. Token decimals are assumed to be 18 for this example.</p>
+<p id="example-note" class="hint" hidden>Invented example. The max and 20-token requests both use a fictional button amount of 20; the zero request uses 0. Decimals are assumed to be 18. The repeated-1 spender is not verified or recommended.</p>
 <form id="inspect-form" autocomplete="off">
 <label for="calldata">Approval calldata (hex)</label>
 <textarea id="calldata" rows="5" maxlength="512" spellcheck="false" autocapitalize="off" autocomplete="off" aria-describedby="data-help decode-error" placeholder="0x095ea7b3…"></textarea>
@@ -21,6 +21,9 @@
 <label for="decimals">Token decimals, if you know them <span>(optional)</span></label>
 <input id="decimals" type="text" inputmode="numeric" maxlength="3" spellcheck="false" aria-describedby="decimal-help decode-error">
 <p id="decimal-help" class="hint">Blank means raw units only. We support 0–36 and never infer decimals, token name or chain. A wrong decimals value gives a wrong token amount.</p>
+<label for="claimed-amount">Amount shown by the button <span>(optional)</span></label>
+<input id="claimed-amount" type="text" inputmode="decimal" maxlength="116" spellcheck="false" autocomplete="off" aria-describedby="amount-help decode-error" placeholder="For example, 20 or 0.5">
+<p id="amount-help" class="hint">Use token units, not raw units, and supply decimals above. Exact math, no rounding. We compare only what you enter, not the actual button or contract. Blank skips comparison.</p>
 <div class="inspect-actions"><button type="submit">Decode locally</button><button type="button" id="clear-data" class="plain">Clear form</button></div>
 <p id="decode-error" role="alert" hidden></p>
 </form>
@@ -33,10 +36,11 @@
 <p id="allowance-label" class="allowance-label"></p>
 <dl id="approval-details"></dl>
 <p id="allowance-meaning"></p>
+<div id="amount-comparison" hidden><p id="comparison-label" class="allowance-label"></p><p id="comparison-detail"></p><p class="warning">This compares an unverified amount you entered with an encoded value, assuming standard ERC-20 behavior and your supplied decimals. Matching amounts do not prove honest button text, correct token units or a safe spender. A smaller request does not prove a completed purchase.</p></div>
 <p class="warning">A matching selector does not prove the target is an ERC-20 token. ERC-721’s per-token <code>approve(address,uint256)</code> uses the same selector, but its second value is a token ID, not an allowance. Other contracts can also interpret these bytes differently. Verify the destination contract and token standard, chain and spender independently. The decoded address is lowercase, not checksum-verified.</p>
 <p class="warning">No contract call or transaction receipt was checked. Even a bounded amount is not a safe-spender verdict. Decoding an approval does not execute or confirm a swap.</p>
 <button type="button" id="copy-summary">Copy decoded summary</button>
-<p class="hint">This explicitly copies the decoded spender and amount to your clipboard. It does not upload them or create a public result link.</p>
+<p class="hint">This explicitly copies decoded values and any entered-amount comparison to your clipboard. It does not upload them or create a public result link.</p>
 <p id="copy-status" role="status" aria-live="polite"></p>
 </div>
 </section>

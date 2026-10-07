@@ -15,4 +15,6 @@ Primary references to recheck before implementing the UiPath journey: [AgentHack
 
 2026-10-06 proof update: two distinct historical owner runs now have verified HTTP JSON outputs at tested Flow revision d85a1ddc7bb9cd1cc6a13b4d5db95474228f1fe9. The public evidence explorer exposes observed times, redacted output, source and local fixture-digest comparison. It does not claim browser automation, wallet auditing, cryptographically authenticated Cloud receipts or proof of newer local features.
 
+2026-10-07 extension: optional visitor-entered button amounts are compared to locally decoded requests with exact integer differences. This is established allowance arithmetic, not new ABI decoding or authenticated button inspection. The contribution is closing the teaching-to-own-request loop while keeping amounts private and explicitly unverified. Historical UiPath observations do not prove this local feature.
+
 Current delivery implements the synthetic interaction, local decoder and narrow dated UiPath JSON observation evidence. A generic runner with screenshots would not differentiate it. Consult current source again when implementing a real opt-in UI journey; descriptions can change.

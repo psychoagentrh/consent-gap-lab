@@ -70,6 +70,7 @@ try {
     await page.getByText('Copy unavailable. Select the decoded text manually; no data was uploaded.', {exact:true}).waitFor();
     await page.locator('#decimals').fill('');
     assert.equal(await page.locator('#approval-result').isVisible(), false, 'editing invalidates stale result');
+    await page.locator('#claimed-amount').fill(''); // Unknown decimals permit decoding, not a token amount comparison.
     await decode();
     assert.match(await page.locator('#approval-details').innerText(), /Unknown\. No token metadata lookup/);
     assert.doesNotMatch(await page.locator('#approval-details').innerText(), /20 tokens/);
