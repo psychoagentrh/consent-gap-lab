@@ -28,7 +28,13 @@ Optionally enter the amount shown by the button plus token decimals you supply. 
 
 Observed times are 2026-10-06T09:06:48.685Z (unlimited) and 2026-10-06T09:49:01.425Z (bounded), both at tested workspace/Flow revision `d85a1ddc7bb9cd1cc6a13b4d5db95474228f1fe9`. Public source snapshot `acad500cabe86be373481fe66e505f432ae906db` is the gateway-published mapping for that tested revision and contains the same unchanged Flow. `/owner-observations.json` is manually curated from gateway-verified receipts: bounded input and eight allowlisted outputs only, without tenant identifiers, private operation/job IDs, credentials or raw traces. It is unsigned published evidence, not an independently verifiable UiPath attestation. Newer app behavior is covered separately by local/live browser tests, not these historical Cloud receipts.
 
-`npm run test:browser` covers inspector, prediction/comparison and evidence; `CAPTURE_EVIDENCE_DEMO=1 node tests/evidence-browser.mjs` captures the public evidence UI at desktop/mobile widths. These are screenshots of the publication, not UiPath tenant traces.
+`npm run test:browser` covers inspector, entered-amount comparison, prediction/comparison, evidence and automated accessibility/reflow; `CAPTURE_EVIDENCE_DEMO=1 node tests/evidence-browser.mjs` captures the public evidence UI at desktop/mobile widths. These are screenshots of the publication, not UiPath tenant traces.
+
+## Automated accessibility regression
+
+`npm run test:accessibility` runs pinned axe-core/Playwright checks across 15 interaction and recovery states at 1280, 390 and 320 CSS pixels (45 local audits), plus a document horizontal-overflow assertion. It is included in the standard `npm run test:browser` command. Use `CONSENT_GAP_BASE_URL=https://lab.psychoagent.com npm run test:accessibility` to check a deployed copy; live mode covers the 13 non-fault states at each width (39 audits) and does not inject HTTP failures. The Fly fallback can be checked the same way. An optional `ACCESSIBILITY_REPORT=/absolute/private/path.json` saves detailed findings outside the public repository.
+
+The selected WCAG A/AA and best-practice rule tags provide an automated regression, **not a WCAG conformance certification, screen-reader test or human visual review**. Axe's incomplete checks are retained in the report rather than treated as passes; text contrast over the landing-page gradient still needs manual review. This suite neither runs nor proves the UiPath Flow and creates no Cloud evidence.
 
 ## Portable UiPath Flow
 
