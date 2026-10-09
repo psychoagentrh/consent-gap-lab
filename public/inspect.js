@@ -1,6 +1,8 @@
 import { decodeApproval, approvalExamples } from './approval.js';
+import { readExampleLink, exampleURL, invalidExampleMessage } from './inspector-link.js';
 const $ = selector => document.querySelector(selector);
 let decoded = null;
+let exampleCopyVersion = 0;
 function comparisonText(comparison) {
   return comparison.relation === 'equal' ? 'Matches the amount you entered' : 'Request is ' + comparison.relation + ' than your entered amount';
 }
@@ -11,6 +13,8 @@ const meanings = {
 };
 function resetResult() {
   decoded = null;
+  exampleCopyVersion++;
+  $('#example-copy-status').textContent = '';
   $('#approval-result').hidden = true;
   $('#empty-result').hidden = false;
   $('#approval-details').replaceChildren();
@@ -25,17 +29,26 @@ function resetResult() {
   for (const field of ['calldata','decimals','claimed-amount']) $('#' + field).removeAttribute('aria-invalid');
 }
 for (const field of ['calldata','decimals','claimed-amount']) {
-  $('#' + field).addEventListener('input', () => { resetResult(); $('#example-note').hidden = true; });
+  $('#' + field).addEventListener('input', () => { clearExampleLink(); resetResult(); $('#example-note').hidden = true; });
+}
+function clearExampleLink() {
+  if (location.search || location.hash) history.replaceState(null, '', location.pathname);
+  $('#example-link-error').hidden = true;
+}
+function fillExample(name) {
+  resetResult();
+  $('#calldata').value = approvalExamples[name];
+  $('#decimals').value = '18';
+  $('#claimed-amount').value = name === 'zero' ? '0' : '20';
+  $('#example-note').hidden = false;
 }
 document.querySelectorAll('[data-example]').forEach(button => button.addEventListener('click', () => {
-  resetResult();
-  $('#calldata').value = approvalExamples[button.dataset.example];
-  $('#decimals').value = '18';
-  $('#claimed-amount').value = button.dataset.example === 'zero' ? '0' : '20';
-  $('#example-note').hidden = false;
+  clearExampleLink();
+  fillExample(button.dataset.example);
   $('#calldata').focus();
 }));
 $('#clear-data').addEventListener('click', () => {
+  clearExampleLink();
   $('#inspect-form').reset();
   resetResult();
   $('#example-note').hidden = true;
@@ -43,6 +56,9 @@ $('#clear-data').addEventListener('click', () => {
 });
 $('#inspect-form').addEventListener('submit', event => {
   event.preventDefault();
+  decodeCurrent();
+});
+function decodeCurrent() {
   resetResult();
   try {
     decoded = decodeApproval($('#calldata').value, $('#decimals').value, $('#claimed-amount').value);
@@ -78,7 +94,7 @@ $('#inspect-form').addEventListener('submit', event => {
   $('#empty-result').hidden = true;
   $('#approval-result').hidden = false;
   $('#approval-title').focus();
-});
+}
 $('#copy-summary').addEventListener('click', async () => {
   if (!decoded) return;
   const result = decoded;
@@ -106,3 +122,28 @@ $('#copy-summary').addEventListener('click', async () => {
     if (decoded === result) $('#copy-status').textContent = 'Copy unavailable. Select the decoded text manually; no data was uploaded.';
   }
 });
+$('#copy-example-link').addEventListener('click', async () => {
+  const version = ++exampleCopyVersion;
+  try {
+    await navigator.clipboard.writeText(exampleURL);
+    if (version === exampleCopyVersion) $('#example-copy-status').textContent = 'Invented example link copied. Your entered data is not included.';
+  } catch {
+    if (version === exampleCopyVersion) $('#example-copy-status').textContent = 'Copy unavailable. Use the max vs 20 example link above; it contains no entered data.';
+  }
+});
+function loadExampleLink() {
+  $('#inspect-form').reset();
+  resetResult();
+  $('#example-note').hidden = true;
+  $('#example-link-error').hidden = true;
+  try {
+    const name = readExampleLink(location.href);
+    if (name) { fillExample(name); decodeCurrent(); }
+  } catch {
+    clearExampleLink();
+    $('#example-link-error').textContent = invalidExampleMessage;
+    $('#example-link-error').hidden = false;
+  }
+}
+window.addEventListener('popstate', loadExampleLink);
+loadExampleLink();

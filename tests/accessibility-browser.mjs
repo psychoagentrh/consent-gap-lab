@@ -84,6 +84,13 @@ try {
     await page.getByRole('button', { name: 'Decode locally', exact: true }).click();
     await audit(page, width, 'zero-smaller');
 
+    await page.goto(base + '/inspect.html?example=maximum-vs-20', { waitUntil: 'networkidle' });
+    await page.locator('#approval-result').waitFor({ state: 'visible' });
+    await audit(page, width, 'inspector-example-link');
+    await page.goto(base + '/inspect.html?example=unknown', { waitUntil: 'networkidle' });
+    await page.locator('#example-link-error').waitFor({ state: 'visible' });
+    await audit(page, width, 'inspector-link-refused');
+
     await page.goto(base + '/evidence.html', { waitUntil: 'networkidle' });
     await page.locator('#digest-status.match').waitFor();
     await audit(page, width, 'unlimited-evidence');

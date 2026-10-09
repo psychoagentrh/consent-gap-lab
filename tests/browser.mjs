@@ -92,14 +92,14 @@ try {
   assert.equal(await page.locator('#choices').isVisible(), true);
   await page.setViewportSize({width:390,height:850});
   await page.goto(base + '/demo.html');
-  assert.equal(await page.locator('.demo-captures img').count(), 8);
+  assert.equal(await page.locator('.demo-captures img').count(), 10);
   for (const image of await page.locator('.demo-captures img').all()) {
     await image.scrollIntoViewIfNeeded();
     await image.evaluate(img => img.decode());
   }
   assert.ok(await page.evaluate(() => [...document.images].every(img => img.complete && img.naturalWidth > 0)));
   assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
-  const pngRoutes = ['/demo/1280-unlimited.png','/demo/1280-bounded.png','/demo/390-unlimited.png','/demo/390-bounded.png','/demo/comparison-1280.png','/demo/comparison-390.png','/demo/inspect-1280.png','/demo/inspect-390.png','/demo/evidence-1280.png','/demo/evidence-390.png'];
+  const pngRoutes = ['/demo/example-link-1280.png','/demo/example-link-390.png','/demo/1280-unlimited.png','/demo/1280-bounded.png','/demo/390-unlimited.png','/demo/390-bounded.png','/demo/comparison-1280.png','/demo/comparison-390.png','/demo/inspect-1280.png','/demo/inspect-390.png','/demo/evidence-1280.png','/demo/evidence-390.png'];
   for (const route of pngRoutes) {
     const response = await page.request.get(base + route);
     assert.equal(response.status(), 200);
