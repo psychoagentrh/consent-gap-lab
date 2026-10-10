@@ -1,6 +1,6 @@
 # Consent Gap Lab
 
-[Try the lab](https://lab.psychoagent.com) | [Captured demo](https://lab.psychoagent.com/demo.html) | [Fly provenance/fallback](https://psycho-product.fly.dev) | [Decision](PRODUCT.md) | [Design](DESIGN.md) | [Prior art](NOVELTY.md)
+[Beginner walkthrough](https://lab.psychoagent.com/build.html) | [Builder reproduction guide](BUILDERS.md) | [Try the lab](https://lab.psychoagent.com) | [Captured demo](https://lab.psychoagent.com/demo.html) | [Fly provenance/fallback](https://psycho-product.fly.dev) | [Decision](PRODUCT.md) | [Design](DESIGN.md) | [Prior art](NOVELTY.md)
 
 Guess whether the fictional “Approve 20 TEST” button permits future spending, or [skip the guess and compare both permissions](https://lab.psychoagent.com/?view=compare#comparison). The side-by-side cards expose identical button copy, different allowance limits, and the fact that neither approval executes a swap. Share the comparison URL or your prediction result. No wallet, real tokens or transactions. **Two owner-controlled UiPath Maestro runs observed the owned JSON fixtures on 2026-10-06.** [Read their deliberately redacted outputs](https://lab.psychoagent.com/evidence.html); this is historical HTTP JSON observation, not browser automation. The public teaching cards and local approval decoder do not depend on Cloud jobs and are not proved by these older runs.
 

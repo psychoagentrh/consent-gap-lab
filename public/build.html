@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Try a local crypto approval lesson, trace the four-node UiPath Flow, and reproduce its narrow HTTP JSON observation in your own tenant.">
+<title>Consent Gap Lab | Where UiPath fits</title>
+<link rel="stylesheet" href="/style.css"><link rel="stylesheet" href="/build.css">
+</head>
+<body>
+<header><a class="brand" href="/">✳ PSYCHO <span>/ FIELD LAB 001</span></a><a class="source" href="https://github.com/psychoagentrh/consent-gap-lab">SOURCE ↗</a></header>
+<main>
+<section class="intro"><p class="eyebrow">The beginner walkthrough / no wallet required</p><h1>Try the lesson.<br><em>Trace the Flow.</em></h1><p class="dek">The browser teaches an approval lesson. UiPath separately observed the two owned JSON fixtures. Here is what you can try, what actually ran and how to reproduce that narrow observation.</p><div class="status">TWO DISTINCT PARTS <span>Local interaction + dated owner-run evidence</span></div></section>
+<section class="walkthrough" aria-labelledby="start-heading">
+<h2 id="start-heading">Start here. About 90 seconds.</h2>
+<ol class="paths">
+<li><h3>1. See the permission gap</h3><p>An invented “Approve 20” button faces a maximum allowance. Open the example, compare the exact difference and copy a fixed lesson link. No wallet, upload or Cloud job.</p><a class="action" href="/inspect.html?example=maximum-vs-20">Try maximum vs 20 ↗</a></li>
+<li><h3>2. Read what UiPath observed</h3><p>Switch between two published owner observations from 2026-10-06. Read their timestamps, source revisions and outputs. Compare their payload digests with the current teaching bytes locally.</p><a class="action" href="/evidence.html">Explore the dated evidence ↗</a></li>
+<li><h3>3. Inspect or run your own copy</h3><p>Expand the four steps below. Builders can clone the source, validate and pack it offline, then manually run two inputs in their own licensed tenant.</p><a class="action" href="#flow-heading">Trace the four steps ↓</a></li>
+</ol>
+</section>
+<section class="walkthrough" aria-labelledby="flow-heading">
+<h2 id="flow-heading">The four-node UiPath path</h2><p>Open each step to follow one observation from input to output. These controls only expand text. They never submit a job.</p>
+<div class="flow-trace">
+<details id="step-start" open><summary>1 / Manual trigger: choose a specimen</summary><div class="step-body"><p>The owner supplies <code>specimenCase</code>: <code>unlimited</code> or <code>bounded</code>. The published gateway manifest restricts inputs to those two cases. The portable Flow itself is not a general-purpose URL scanner.</p><p>Public visitors do not use this trigger. Reading this walkthrough or suggesting a case cannot start a Cloud job.</p></div></details>
+<details id="step-http"><summary>2 / HTTP GET: read the owned fixture</summary><div class="step-body"><p>UiPath's managed HTTP action reads <code>https://psycho-product.fly.dev/api/specimens/</code> plus the chosen case. The response is an invented approval specimen, not a wallet screenshot or live transaction.</p><p>The HTTP node has a 30-second timeout and zero retries. A request failure is a failed run, not a substituted success.</p><p><a href="/api/specimens/unlimited">Inspect fixture A JSON ↗</a> · <a href="/api/specimens/bounded">Inspect fixture B JSON ↗</a></p></div></details>
+<details id="step-evaluate"><summary>3 / Script: reject unexpected data</summary><div class="step-body"><p>The evaluator checks the synthetic schema, selected case, known button text, permission fields and digest format. It rejects unexpected data rather than fabricating an observation.</p><p>It derives whether allowance exceeds the 20 TEST button and returns <code>approvalIsSwap=false</code>. It does not independently recompute or authenticate the host-provided digest.</p></div></details>
+<details id="step-end"><summary>4 / End: return eight bounded outputs</summary><div class="step-body"><p>The result contains <code>specimenCaseObserved</code>, <code>scopeExceedsButton</code>, <code>approvalIsSwap</code>, <code>verdict</code>, <code>fixtureSchema</code>, <code>payloadDigest</code>, <code>observedAt</code> and <code>method</code>.</p><p>Each observation has its own UTC timestamp. The separately published evidence names the tested workspace and immutable public source revisions. Older observations are not live guarantees.</p></div></details>
+</div>
+<h3>What the two inputs return</h3>
+<div class="table-wrap"><table><caption>Expected fixture outputs, not a new Cloud run</caption><thead><tr><th scope="col">Input</th><th scope="col">Scope exceeds 20 TEST?</th><th scope="col">Verdict</th></tr></thead><tbody><tr><th scope="row"><code>unlimited</code></th><td>Yes</td><td><code>Button != permission</code></td></tr><tr><th scope="row"><code>bounded</code></th><td>No</td><td><code>Approval != swap</code></td></tr></tbody></table></div>
+<aside class="limits"><h3>Useful proof. Narrow scope.</h3><p>UiPath supplies the owner-controlled HTTP JSON observation path. It did not drive a browser, connect a wallet, audit a token or execute a swap. The newer local comparison and calldata inspector are not proved by the two historical runs.</p><p>The redacted evidence is a manually curated, unsigned publication. A local digest match links bytes; it does not authenticate a Cloud job or declare a request safe. Visitor-triggered UiPath Cloud runs remain disabled.</p></aside>
+</section>
+<section class="walkthrough" aria-labelledby="reproduce-heading">
+<h2 id="reproduce-heading">Build it in your own environment</h2><p>You can inspect, test, validate and pack the source without a UiPath login. Cloud publication and execution require your own licensed tenant, dedicated folder, permissions and run allowance. They are optional, separate actions.</p>
+<a class="action" href="https://github.com/psychoagentrh/consent-gap-lab/blob/main/BUILDERS.md">Follow the copy-and-run guide ↗</a>
+<p><a href="https://github.com/psychoagentrh/consent-gap-lab/blob/main/uipath/ConsentGapSolution/ConsentGap/Psycho_ConsentGap.flow">Inspect the current Flow source ↗</a> · <a href="/evidence.html#provenance">Inspect the exact historical source ↗</a></p><p>The guide lists local commands, tenant prerequisites, the two manual inputs, expected outputs and how to handle failure. Never paste credentials, private traces or wallet requests into an issue.</p>
+<p><a href="/build.html">Share this walkthrough ↗</a> · <a href="/demo.html">See authentic captured demos ↗</a></p>
+</section>
+</main>
+<footer><strong>Consent Gap Lab</strong><span>Independent experiment. Not affiliated with or endorsed by UiPath.</span></footer>
+</body></html>

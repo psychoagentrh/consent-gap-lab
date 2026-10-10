@@ -1,5 +1,7 @@
 # Consent Gap Lab
 
+2026-10-10: `/build.html` answers the beginner UiPath-use question with three concrete paths: try the fixed local lesson, explore dated evidence, or trace and reproduce the four-node owner Flow. Native disclosure controls work without JavaScript; `BUILDERS.md` separates credential-free validation/packing from optional owner-controlled tenant execution. The guide does not broaden the historical proof or enable visitor-triggered Cloud runs.
+
 2026-10-09: a fixed `?example=maximum-vs-20` inspector entry point opens the invented maximum request against a 20-token button amount in one click. Visitors can copy that lesson link independently of their own pasted request. Only the allowlisted example identifier is accepted; additional parameters, unknown/duplicate examples and fragments are refused without echoing them. Editing or clearing drops the preset URL and invalidates output. This extends the local teaching interaction, not the historical UiPath proof or public Cloud availability.
 
 Decision, 2026-09-30: build a zero-wallet educational probe of crypto consent gaps. A visitor sees the same fictional “Approve 20 TEST” button under two different simulated permissions, predicts whether the approval could cover more than 20 TEST, and receives an explicit comparison and shareable result URL. A real wallet is never requested. A person learning approvals can finish in under 90 seconds.
