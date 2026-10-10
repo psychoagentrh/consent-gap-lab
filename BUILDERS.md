@@ -38,6 +38,9 @@ cd consent-gap-lab
 npm ci
 npm test
 npm install --global @uipath/cli@1.202.1
+export UIPATH_CLI_DISABLE_AUTOINSTALL=true
+export UIPATH_CLI_DISABLE_VERSION_SYNC=true
+export UIPATH_CLI_DISABLE_TOOL_LINE_CHECK=true
 uip --version
 uip maestro flow validate uipath/ConsentGapSolution/ConsentGap/Psycho_ConsentGap.flow --strict-expressions
 uip maestro flow pack uipath/ConsentGapSolution/ConsentGap /tmp/consent-gap-pack --name Psycho.ConsentGap --version 1.0.0
@@ -51,7 +54,7 @@ To try the public app locally:
 npm start
 ```
 
-Open the local address printed by the server, then `/build.html`. Browser tests are separate from `npm test`; see [README](README.md#run) for their commands and Playwright setup.
+Open [http://localhost:8080/build.html](http://localhost:8080/build.html). The server uses port 8080 by default; `npm start` does not print a local address. If that port is already occupied, run `PORT=8081 npm start` and open `http://localhost:8081/build.html` instead. Browser tests are separate from `npm test`; see [README](README.md#run-the-application) for their commands and Playwright setup.
 
 ## 4. Optional: run in your own UiPath tenant
 

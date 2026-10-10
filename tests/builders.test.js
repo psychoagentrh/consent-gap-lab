@@ -84,3 +84,20 @@ test('walkthrough is discoverable and its same-origin links exist', async () => 
   assert.ok(!/<script\b/.test(page));
   assert.ok(!/<(?:iframe|form)\b/.test(page));
 });
+
+test('local-start guide gives the real default URL and a valid README section', async () => {
+  const server = await text('server.js');
+  const readme = await text('README.md');
+  assert.ok(server.includes("Number(process.env.PORT || 8080)"));
+  assert.ok(guide.includes('[http://localhost:8080/build.html](http://localhost:8080/build.html)'));
+  assert.ok(guide.includes('PORT=8081 npm start'));
+  assert.ok(guide.includes('http://localhost:8081/build.html'));
+  assert.ok(guide.includes('`npm start` does not print a local address'));
+  assert.ok(!guide.includes('local address printed by the server'));
+  assert.ok(guide.includes('README.md#run-the-application'));
+  assert.ok(readme.includes('## Run the application'));
+  assert.ok(!guide.includes('README.md#run)'));
+  for (const variable of ['UIPATH_CLI_DISABLE_AUTOINSTALL', 'UIPATH_CLI_DISABLE_VERSION_SYNC', 'UIPATH_CLI_DISABLE_TOOL_LINE_CHECK']) {
+    assert.ok(guide.includes('export '+variable+'=true'));
+  }
+});
