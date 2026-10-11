@@ -85,6 +85,23 @@ test('walkthrough is discoverable and its same-origin links exist', async () => 
   assert.ok(!/<(?:iframe|form)\b/.test(page));
 });
 
+test('local installation explicitly supplies the matching Maestro tool before disabled auto-install use', async () => {
+  const readme = await text('README.md');
+  for (const [name, document] of [['BUILDERS.md', guide], ['README.md', readme]]) {
+    const install = document.match(/^npm install --global (.+)$/m);
+    assert.ok(install, name + ' missing explicit install command');
+    assert.deepEqual(install[1].trim().split(/\s+/), ['@uipath/cli@1.202.1', '@uipath/maestro-tool@1.202.1'], name);
+    const invoke = document.indexOf('\nuip --version\n', install.index);
+    assert.ok(invoke > install.index, name + ' missing CLI verification after installation');
+    for (const variable of ['UIPATH_CLI_DISABLE_AUTOINSTALL', 'UIPATH_CLI_DISABLE_VERSION_SYNC', 'UIPATH_CLI_DISABLE_TOOL_LINE_CHECK']) {
+      const guard = document.indexOf('export ' + variable + '=true', install.index);
+      assert.ok(guard > install.index && guard < invoke, name + ' missing guard before invocation: ' + variable);
+    }
+    assert.ok(document.includes('CLI alone') || document.includes('Installing only the CLI'), name + ' missing tool-dispatch explanation');
+    assert.ok(document.includes('registry access') && document.includes('writable global npm prefix'), name + ' missing npm prerequisites');
+  }
+});
+
 test('local-start guide gives the real default URL and a valid README section', async () => {
   const server = await text('server.js');
   const readme = await text('README.md');

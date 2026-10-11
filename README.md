@@ -40,9 +40,13 @@ The selected WCAG A/AA and best-practice rule tags provide an automated regressi
 
 Source: `uipath/ConsentGapSolution/ConsentGap/Psycho_ConsentGap.flow`. Manual start → managed HTTP GET of the owned JSON specimen → strict evaluator → end outputs. Input `specimenCase` is restricted by the gateway manifest to `unlimited` or `bounded`. No arbitrary URLs, credentials or wallet actions. HTTP errors and invalid data fault the run; they are not replaced with fabricated observations.
 
-Pinned CLI: `@uipath/cli` 1.202.1. Set `UIPATH_CLI_DISABLE_AUTOINSTALL=true`, `UIPATH_CLI_DISABLE_VERSION_SYNC=true`, and `UIPATH_CLI_DISABLE_TOOL_LINE_CHECK=true` before local authoring. No login is needed for validation/packing:
+Pinned CLI and Maestro tool: `@uipath/cli@1.202.1` and `@uipath/maestro-tool@1.202.1`. Install both explicitly: the CLI alone does not supply Maestro when auto-install is disabled. npm installation needs registry access and a writable global npm prefix; validation/packing needs no UiPath login. Run from the repository root:
 
 ```sh
+npm install --global @uipath/cli@1.202.1 @uipath/maestro-tool@1.202.1
+export UIPATH_CLI_DISABLE_AUTOINSTALL=true
+export UIPATH_CLI_DISABLE_VERSION_SYNC=true
+export UIPATH_CLI_DISABLE_TOOL_LINE_CHECK=true
 uip --version
 uip maestro flow validate uipath/ConsentGapSolution/ConsentGap/Psycho_ConsentGap.flow --strict-expressions
 uip maestro flow pack uipath/ConsentGapSolution/ConsentGap uipath/packages --name Psycho.ConsentGap --version 1.0.0 --author Psycho

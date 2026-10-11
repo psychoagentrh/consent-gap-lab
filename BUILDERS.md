@@ -30,14 +30,14 @@ Both cases return `approvalIsSwap=false`, `fixtureSchema=consent-gap/v1` and `me
 
 ## 3. Validate and pack locally, without credentials
 
-Requirements: Node.js 22 or newer, npm and the pinned UiPath CLI `@uipath/cli@1.202.1`. Start from the repository root. The commands below do not publish, log in or start Cloud jobs.
+Requirements: Node.js 22 or newer, npm and both pinned packages: `@uipath/cli@1.202.1` and `@uipath/maestro-tool@1.202.1`. The CLI dispatches commands; the separately installed Maestro tool supplies `uip maestro`. Installing only the CLI fails at the Maestro command when auto-install is disabled. Start from the repository root. npm installation needs registry access and a writable global npm prefix; subsequent local validation/packing needs no UiPath login. The commands below do not publish, log in or start Cloud jobs.
 
 ```sh
 git clone https://github.com/psychoagentrh/consent-gap-lab.git
 cd consent-gap-lab
 npm ci
 npm test
-npm install --global @uipath/cli@1.202.1
+npm install --global @uipath/cli@1.202.1 @uipath/maestro-tool@1.202.1
 export UIPATH_CLI_DISABLE_AUTOINSTALL=true
 export UIPATH_CLI_DISABLE_VERSION_SYNC=true
 export UIPATH_CLI_DISABLE_TOOL_LINE_CHECK=true
@@ -85,6 +85,6 @@ For **each** returned job key, read its terminal state and all eight outputs and
 
 ## Sources and reproduction boundary
 
-Command shapes above were checked against the installed CLI `1.202.1` help and the current primary [Maestro Flow CLI reference](https://docs.uipath.com/uipath-cli/standalone/latest/user-guide/uip-maestro-flow) on 2026-10-10. The documentation was read; the local `npm test`, Flow validation and pack path were exercised for this guide. No new Cloud run or generic third-party tenant setup is claimed. Existing [published observations](public/owner-observations.json) remain dated and tied to their recorded historical revision.
+Command shapes above were checked against CLI `1.202.1` help and the current primary [Maestro Flow CLI reference](https://docs.uipath.com/uipath-cli/standalone/latest/user-guide/uip-maestro-flow) on 2026-10-10. On 2026-10-11 the CLI-only installation failed to find Maestro with auto-install disabled; explicitly installing both pinned packages passed Flow validation and packing on Linux, Node.js `24.13.0`, npm `11.6.2`, using a fresh npm prefix, cache and home without the build image's UiPath tools. The local `npm test` path was also exercised. The canonical-layout warning remains nonfatal. This is local installation/package evidence, not a new Cloud run or proof of generic third-party tenant setup. Existing [published observations](public/owner-observations.json) remain dated and tied to their recorded historical revision.
 
 This is an independent UiPath experiment, not UiPath endorsement. Ask a concrete reproduction question or suggest a synthetic editorial case via [issues](https://github.com/psychoagentrh/consent-gap-lab/issues). Suggestions are feedback, not promises to run a target.
