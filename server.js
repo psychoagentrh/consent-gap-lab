@@ -4,6 +4,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
 import { specimen } from './public/logic.js';
+import { unsignedApprovalFixture, APPROVAL_CASES } from './uipath/unsigned-approval-fixture.js';
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), 'public');
 const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.json': 'application/json; charset=utf-8', '.svg': 'image/svg+xml', '.png': 'image/png' };
 export function app(req, res) {
@@ -20,6 +21,15 @@ export function app(req, res) {
     const id = url.pathname.slice('/api/specimens/'.length);
     if (!['unlimited','bounded'].includes(id)) { res.writeHead(404); res.end('Unknown specimen'); return; }
     const payload = specimen(id);
+    const digest = createHash('sha256').update(JSON.stringify(payload)).digest('hex');
+    const body = JSON.stringify({ ...payload, payloadDigest:digest });
+    res.writeHead(200, { 'Content-Type':'application/json; charset=utf-8', 'Cache-Control':'no-store', 'X-Content-Type-Options':'nosniff' });
+    res.end(req.method === 'HEAD' ? undefined : body); return;
+  }
+  if (url.pathname.startsWith('/api/unsigned-approvals/')) {
+    const id = url.pathname.slice('/api/unsigned-approvals/'.length);
+    if (!APPROVAL_CASES.includes(id) || url.search !== '') { res.writeHead(404); res.end('Unknown unsigned approval fixture'); return; }
+    const payload = unsignedApprovalFixture(id);
     const digest = createHash('sha256').update(JSON.stringify(payload)).digest('hex');
     const body = JSON.stringify({ ...payload, payloadDigest:digest });
     res.writeHead(200, { 'Content-Type':'application/json; charset=utf-8', 'Cache-Control':'no-store', 'X-Content-Type-Options':'nosniff' });

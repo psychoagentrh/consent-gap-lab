@@ -10,6 +10,17 @@
         }
       },
       "outputs": ["specimenCaseObserved", "scopeExceedsButton", "approvalIsSwap", "verdict", "fixtureSchema", "payloadDigest", "observedAt", "method"]
+    },
+    {
+      "id": "unsigned-approval-observation",
+      "runtime": "api-workflow",
+      "package": "uipath/packages/Psycho.UnsignedApproval.flow.Flow.1.0.1.nupkg",
+      "entrypoint": "Psycho_UnsignedApproval.bpmn",
+      "description": "Owner-controlled HTTP observation of two owned synthetic unsigned approve byte requests. No browser automation, wallet connection, signing or broadcast.",
+      "inputs": {
+        "approvalCase": { "type": "string", "enum": ["maximum", "bounded"], "default": "maximum" }
+      },
+      "outputs": ["approvalCaseObserved", "spender", "rawAllowance", "claimedRawAmount", "comparison", "scopeExceedsButton", "approvalIsSwap", "verdict", "fixtureSchema", "payloadDigest", "observedAt", "method"]
     }
   ]
 }

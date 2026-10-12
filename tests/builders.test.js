@@ -25,7 +25,9 @@ const observe = id => {
 
 test('builder walkthrough documents the actual four-node Flow and all End output names', () => {
   assert.deepEqual(flow.nodes.map(n => n.type),['core.trigger.manual','core.action.http.v2','core.action.script','core.control.end']);
-  assert.equal((page.match(/<details\b/g)||[]).length,flow.nodes.length);
+  assert.equal((page.match(/<details id="step-/g)||[]).length,flow.nodes.length);
+  assert.ok(page.includes('<details id="unsigned-byte-spike">'));
+  assert.ok(page.includes('Cloud proof pending.'));
   assert.equal(Object.keys(end.outputs).length,8);
   for(const name of Object.keys(end.outputs)) {
     assert.ok(page.includes('<code>'+name+'</code>'),name+' missing in walkthrough');
@@ -78,7 +80,7 @@ test('walkthrough is discoverable and its same-origin links exist', async () => 
   assert.ok((await text('README.md')).includes('BUILDERS.md'));
   for(const href of [...page.matchAll(/(?:href|src)="(\/[^"]*)"/g)].map(match=>match[1])) {
     const path=href.split(/[?#]/)[0];
-    if(path.startsWith('/api/')) assert.ok(['/api/specimens/unlimited','/api/specimens/bounded'].includes(path));
+    if(path.startsWith('/api/')) assert.ok(['/api/specimens/unlimited','/api/specimens/bounded','/api/unsigned-approvals/maximum','/api/unsigned-approvals/bounded'].includes(path));
     else assert.ok((await text('public/'+(path==='/'?'index.html':path.slice(1)))).length>0,path);
   }
   assert.ok(!/<script\b/.test(page));

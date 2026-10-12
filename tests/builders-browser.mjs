@@ -32,7 +32,10 @@ try {
       if(!await item.evaluate(el=>el.open)) await item.locator('summary').click();
       assert.equal(await item.evaluate(el=>el.open),true);
     }
-    assert.equal(await details.count(),4);
+    assert.equal(await details.count(),5);
+    assert.equal(await page.locator('#unsigned-byte-spike').evaluate(el=>el.open),true);
+    assert.ok(await page.locator('#unsigned-byte-spike').innerText().then(text=>text.includes('Cloud proof pending.')));
+    assert.equal(await page.locator('#unsigned-byte-spike a').first().getAttribute('href'),'https://github.com/psychoagentrh/consent-gap-lab/blob/main/UNSIGNED-APPROVAL.md');
     assert.equal(await page.locator('.table-wrap tbody tr').count(),2);
     const layout=await page.evaluate(()=>({
       viewport:innerWidth,

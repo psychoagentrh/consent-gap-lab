@@ -10,6 +10,11 @@ Start with the [90-second walkthrough](https://lab.psychoagent.com/build.html). 
 
 ## 2. Inspect the four-node Flow
 
+The next [unsigned approval-byte observation spike](UNSIGNED-APPROVAL.md) reads
+invented ERC-20 calldata rather than copying a JSON scope label. Its source,
+local rehearsal and two read-only fixtures are available. Its Cloud proof is
+pending; the historical runs below do not prove this extension.
+
 Source: [`uipath/ConsentGapSolution/ConsentGap/Psycho_ConsentGap.flow`](uipath/ConsentGapSolution/ConsentGap/Psycho_ConsentGap.flow).
 
 | Node | Behavior | Boundary |
