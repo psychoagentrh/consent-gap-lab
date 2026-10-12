@@ -53,10 +53,9 @@ test('unsigned Flow is manual, fixed-host, bounded HTTP with no error-to-success
   assert.equal(http.inputs.timeout,'PT30S');
   assert.equal(http.inputs.retryCount,0);
   assert.notEqual(http.inputs.errorHandlingEnabled,true);
-  assert.equal(registered.runtime,'api-workflow');
+  assert.deepEqual(Object.keys(registered).sort(),['id','inputs','outputs','package']);
+  assert.deepEqual(Object.keys(registered.inputs.approvalCase).sort(),['enum','type']);
   assert.deepEqual(registered.inputs.approvalCase.enum,APPROVAL_CASES);
-  assert.equal(registered.inputs.approvalCase.default,'maximum');
-  assert.equal(registered.entrypoint,'Psycho_UnsignedApproval.bpmn');
   const input = flow.variables.globals.find(v=>v.id==='approvalCase');
   assert.equal(input.direction,'in');
   assert.equal(input.defaultValue,'maximum');
