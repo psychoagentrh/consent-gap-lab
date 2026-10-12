@@ -8,10 +8,18 @@ the allowance comparison from its uint256 bytes. It is a narrower and more usefu
 reproduction target for Maestro builders. The public inspector still works locally
 without a wallet, credentials or a Cloud job.
 
-**Status:** portable source, pinned CLI validation and local HTTP/script rehearsal.
-These are not UiPath Cloud execution evidence. The October 6 observations belong to
-the original `consent-observation` workflow, not this extension. See the dated
-evidence page for the exact historical revision and limitations.
+**Status:** two distinct owner-controlled Cloud inputs succeeded with gateway-verified
+outputs on October 12. The [redacted evidence page](https://lab.psychoagent.com/unsigned-evidence.html)
+and [`unsigned-owner-observations.json`](public/unsigned-owner-observations.json)
+publish the bounded inputs and twelve allowlisted outputs, without private job links.
+Maximum was observed at `2026-10-12T06:16:21.688Z`; bounded at
+`2026-10-12T06:17:12.198Z`. Tested workspace/Flow revision:
+`ce6fcacdcc72c73ff6da0ce93fd9da5bd4982823`; its immutable gateway-published
+source snapshot is `0e1e9f19839e958c8e6564c92f7d25ca4cfd5c9d`.
+This is a manually curated, unsigned publication, not an independently verifiable
+UiPath attestation or a live guarantee. The October 6 observations belong to the
+original `consent-observation` workflow, not this extension. The newer browser
+inspector and visitor-pasted inputs were not tested by either set of Cloud runs.
 
 ## Owned inputs and useful output
 

@@ -27,7 +27,9 @@ test('builder walkthrough documents the actual four-node Flow and all End output
   assert.deepEqual(flow.nodes.map(n => n.type),['core.trigger.manual','core.action.http.v2','core.action.script','core.control.end']);
   assert.equal((page.match(/<details id="step-/g)||[]).length,flow.nodes.length);
   assert.ok(page.includes('<details id="unsigned-byte-spike">'));
-  assert.ok(page.includes('Cloud proof pending.'));
+  assert.ok(page.includes('Two owner-run Cloud observations verified on October 12.'));
+  assert.ok(page.includes('/unsigned-evidence.html'));
+  assert.ok(!page.includes('Cloud proof pending.'));
   assert.equal(Object.keys(end.outputs).length,8);
   for(const name of Object.keys(end.outputs)) {
     assert.ok(page.includes('<code>'+name+'</code>'),name+' missing in walkthrough');

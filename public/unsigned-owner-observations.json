@@ -1,0 +1,44 @@
+{
+  "schema": "consent-gap/unsigned-owner-observations-v1",
+  "workflow": "unsigned-approval-observation",
+  "testedWorkspaceRevision": "ce6fcacdcc72c73ff6da0ce93fd9da5bd4982823",
+  "publicSourceRevision": "0e1e9f19839e958c8e6564c92f7d25ca4cfd5c9d",
+  "provenance": "Manually curated from two gateway-verified owner-run receipts. An unsigned, redacted publication, not an independently verifiable UiPath attestation.",
+  "redaction": "Only the bounded approvalCase input and twelve allowlisted outputs are included. All addresses and transaction bytes belong to invented fixtures. Tenant identifiers, job links, operation identifiers, credentials and raw traces are omitted.",
+  "observations": [
+    {
+      "input": { "approvalCase": "maximum" },
+      "outputs": {
+        "approvalCaseObserved": "maximum",
+        "spender": "0x1111111111111111111111111111111111111111",
+        "rawAllowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+        "claimedRawAmount": "20000000000000000000",
+        "comparison": "larger",
+        "scopeExceedsButton": true,
+        "approvalIsSwap": false,
+        "verdict": "Unsigned approval amount is larger than the synthetic button amount.",
+        "fixtureSchema": "consent-gap-unsigned-approval-v1",
+        "payloadDigest": "0f3e8c73692e8448a59acfeeb0cea40ef54e9e39106de5e51ae13f977c74adde",
+        "observedAt": "2026-10-12T06:16:21.688Z",
+        "method": "HTTP JSON fixture plus canonical approve calldata decoding; not browser automation or a signed transaction"
+      }
+    },
+    {
+      "input": { "approvalCase": "bounded" },
+      "outputs": {
+        "approvalCaseObserved": "bounded",
+        "spender": "0x1111111111111111111111111111111111111111",
+        "rawAllowance": "20000000000000000000",
+        "claimedRawAmount": "20000000000000000000",
+        "comparison": "equal",
+        "scopeExceedsButton": false,
+        "approvalIsSwap": false,
+        "verdict": "Unsigned approval amount equals the synthetic button amount; no swap is proved.",
+        "fixtureSchema": "consent-gap-unsigned-approval-v1",
+        "payloadDigest": "4ef4e18002bd22e1b8a9d179702319768dd628ca6dbfc0de9fcd25e8b0558085",
+        "observedAt": "2026-10-12T06:17:12.198Z",
+        "method": "HTTP JSON fixture plus canonical approve calldata decoding; not browser automation or a signed transaction"
+      }
+    }
+  ]
+}
