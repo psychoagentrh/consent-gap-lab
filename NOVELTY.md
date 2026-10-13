@@ -13,6 +13,8 @@ Primary references to recheck before implementing the UiPath journey: [AgentHack
 
 2026-10-12: dated owner-run approval-byte observations add request-level evidence, not a new ABI decoder or proof of visitors' requests.
 
+2026-10-13: optional expected-spender comparison adds a second, independent question after amount comparison: do the encoded address bytes equal what the visitor expected? Address equality is established functionality, not a novelty claim or authenticated identity check. This is a browser-local teaching extension; no competitor absence or UiPath validation of visitor input is inferred.
+
 2026-10-06 extension: a local, strict ERC-20 approval calldata decoder lets visitors apply the synthetic lesson to their own request without wallet access, metadata guesses or uploads. ABI decoding is established functionality and not a novelty claim. The contribution here is the consent-specific teaching interaction plus practical follow-through. The narrow dated observation proof was completed later that day (see below). No competitor absence or first-ever claim is inferred.
 
 2026-10-06 proof update: two distinct historical owner runs now have verified HTTP JSON outputs at tested Flow revision d85a1ddc7bb9cd1cc6a13b4d5db95474228f1fe9. The public evidence explorer exposes observed times, redacted output, source and local fixture-digest comparison. It does not claim browser automation, wallet auditing, cryptographically authenticated Cloud receipts or proof of newer local features.

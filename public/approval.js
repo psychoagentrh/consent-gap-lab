@@ -42,7 +42,22 @@ function compareAmount(rawAllowance, decimals, input) {
   };
 }
 
-export function decodeApproval(input, decimalInput = '', amountInput = '') {
+// Only compares address bytes with a visitor-supplied expectation. No name,
+// checksum, contract, owner or chain verification is implied by a match.
+function compareSpender(spender, input) {
+  if (typeof input !== 'string' || input.length > 128) {
+    throw new ApprovalInputError('Enter a 0x address with 40 hex digits, or leave it blank. Names, links and transaction JSON are not supported.', 'expected-spender');
+  }
+  const address = input.trim();
+  if (address === '') return null;
+  if (!/^0x[0-9a-fA-F]{40}$/.test(address)) {
+    throw new ApprovalInputError('Enter a 0x address with 40 hex digits, or leave it blank. Names, links and transaction JSON are not supported.', 'expected-spender');
+  }
+  const enteredSpender = address.toLowerCase();
+  return {relation:spender === enteredSpender ? 'equal' : 'different', enteredSpender};
+}
+
+export function decodeApproval(input, decimalInput = '', amountInput = '', spenderInput = '') {
   if (typeof input !== 'string' || input.length > 512) {
     throw new ApprovalInputError('Paste only the 68-byte approval calldata, starting with 0x.');
   }
@@ -68,12 +83,15 @@ export function decodeApproval(input, decimalInput = '', amountInput = '') {
   const decimals = decimalText === '' ? null : Number(decimalText);
   const displayAmount = decimals === null ? null : formatAmount(rawAllowance, decimals);
   const comparison = compareAmount(rawAllowance, decimals, amountInput);
+  const spender = '0x' + addressWord.slice(24).toLowerCase();
+  const spenderComparison = compareSpender(spender, spenderInput);
   return {
     method:'approve(address,uint256)',
-    spender:'0x' + addressWord.slice(24).toLowerCase(),
+    spender,
     rawAllowance, decimals, displayAmount,
     category:rawAllowance === MAX_UINT256 ? 'maximum' : rawAllowance === '0' ? 'zero' : 'bounded',
-    ...(comparison ? {comparison} : {})
+    ...(comparison ? {comparison} : {}),
+    ...(spenderComparison ? {spenderComparison} : {})
   };
 }
 

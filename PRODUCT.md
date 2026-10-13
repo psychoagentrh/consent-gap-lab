@@ -1,5 +1,7 @@
 # Consent Gap Lab
 
+2026-10-13: the local inspector optionally compares the decoded spender with an address the visitor expected. An amount can match while the spender differs. This compares address bytes only, without checksum, ownership, chain or contract verification; blank preserves existing behavior. No new selector, wallet connection, upload or UiPath execution. This practical follow-through extends the lesson, not the dated Cloud proof.
+
 2026-10-12: `/unsigned-evidence.html` adds dated UiPath observations of invented approval bytes: maximum exceeds 20 TEST; bounded equals it. Neither proves a swap. See `UNSIGNED-APPROVAL.md`.
 2026-10-10: `/build.html` answers the beginner UiPath-use question with three concrete paths: try the fixed local lesson, explore dated evidence, or trace and reproduce the four-node owner Flow. Native disclosure controls work without JavaScript; `BUILDERS.md` separates credential-free validation/packing from optional owner-controlled tenant execution. The guide does not broaden the historical proof or enable visitor-triggered Cloud runs.
 

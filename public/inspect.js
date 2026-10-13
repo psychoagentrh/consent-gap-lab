@@ -6,6 +6,9 @@ let exampleCopyVersion = 0;
 function comparisonText(comparison) {
   return comparison.relation === 'equal' ? 'Matches the amount you entered' : 'Request is ' + comparison.relation + ' than your entered amount';
 }
+function spenderComparisonText(comparison) {
+  return comparison.relation === 'equal' ? 'Matches the spender you entered' : 'Different spender than you entered';
+}
 const meanings = {
   maximum:{label:'Maximum uint256 request', text:'This is the largest uint256 value, commonly used as an unlimited allowance by standard ERC-20 implementations. It is not a trust signal or proof that an allowance was granted.'},
   bounded:{label:'Bounded amount request', text:'For a standard ERC-20 contract, this requests an allowance of the amount shown, replacing the existing allowance. The spender may spend against it across multiple transfers. It is not a completed swap or a safety verdict.'},
@@ -23,12 +26,15 @@ function resetResult() {
   $('#amount-comparison').hidden = true;
   $('#comparison-label').textContent = '';
   $('#comparison-detail').textContent = '';
+  $('#spender-comparison').hidden = true;
+  $('#spender-comparison-label').textContent = '';
+  $('#spender-comparison-detail').textContent = '';
   $('#copy-status').textContent = '';
   $('#decode-error').hidden = true;
   $('#decode-error').textContent = '';
-  for (const field of ['calldata','decimals','claimed-amount']) $('#' + field).removeAttribute('aria-invalid');
+  for (const field of ['calldata','decimals','claimed-amount','expected-spender']) $('#' + field).removeAttribute('aria-invalid');
 }
-for (const field of ['calldata','decimals','claimed-amount']) {
+for (const field of ['calldata','decimals','claimed-amount','expected-spender']) {
   $('#' + field).addEventListener('input', () => { clearExampleLink(); resetResult(); $('#example-note').hidden = true; });
 }
 function clearExampleLink() {
@@ -40,6 +46,7 @@ function fillExample(name) {
   $('#calldata').value = approvalExamples[name];
   $('#decimals').value = '18';
   $('#claimed-amount').value = name === 'zero' ? '0' : '20';
+  $('#expected-spender').value = '';
   $('#example-note').hidden = false;
 }
 document.querySelectorAll('[data-example]').forEach(button => button.addEventListener('click', () => {
@@ -61,7 +68,7 @@ $('#inspect-form').addEventListener('submit', event => {
 function decodeCurrent() {
   resetResult();
   try {
-    decoded = decodeApproval($('#calldata').value, $('#decimals').value, $('#claimed-amount').value);
+    decoded = decodeApproval($('#calldata').value, $('#decimals').value, $('#claimed-amount').value, $('#expected-spender').value);
   } catch (error) {
     $('#decode-error').textContent = error.message;
     $('#decode-error').hidden = false;
@@ -91,6 +98,11 @@ function decodeCurrent() {
     $('#comparison-detail').textContent = 'Entered amount: ' + decoded.comparison.enteredAmount + ' tokens. Exact difference: ' + decoded.comparison.differenceAmount + ' tokens (using supplied decimals).';
     $('#amount-comparison').hidden = false;
   }
+  if (decoded.spenderComparison) {
+    $('#spender-comparison-label').textContent = spenderComparisonText(decoded.spenderComparison);
+    $('#spender-comparison-detail').textContent = 'Expected spender (entered, not verified): ' + decoded.spenderComparison.enteredSpender + '. Decoded spender (not verified): ' + decoded.spender + '.';
+    $('#spender-comparison').hidden = false;
+  }
   $('#empty-result').hidden = true;
   $('#approval-result').hidden = false;
   $('#approval-title').focus();
@@ -110,6 +122,11 @@ $('#copy-summary').addEventListener('click', async () => {
       'Button amount entered by visitor (not verified): ' + result.comparison.enteredAmount + ' tokens',
       comparisonText(result.comparison) + '. Exact difference: ' + result.comparison.differenceAmount + ' tokens (using supplied decimals).',
       'Comparison is numerical only. Button text, decimals and standard ERC-20 behavior are not verified. A match or smaller request is not a safety verdict or completed purchase.'
+    ] : []),
+    ...(result.spenderComparison ? [
+      'Expected spender entered by visitor (not verified): ' + result.spenderComparison.enteredSpender,
+      spenderComparisonText(result.spenderComparison) + '.',
+      'Address bytes only, case-insensitive. No checksum, chain, contract or owner verification. A match is not a safety verdict.'
     ] : []),
     'Token standard unverified: ERC-721 uses the same selector but its second value is a token ID, not an allowance.',
     'Contract behavior, chain, token, live allowance and receipt not checked. No transaction executed.',
