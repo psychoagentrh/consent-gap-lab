@@ -1,5 +1,7 @@
 # Consent Gap Lab
 
+2026-10-14: the demo now leads with a three-step invented spender mismatch: a bounded request matches 20 TEST but grants permission to a different address from the visitor's stated expectation. Desktop/mobile result-panel captures are unedited, dated and tied to their source revisions and image hashes. Visitors can reproduce the comparison locally without a wallet or Cloud job. This demonstrates the existing local inspector; it does not broaden the dated UiPath evidence or authenticate an address.
+
 2026-10-13: the local inspector optionally compares the decoded spender with an address the visitor expected. An amount can match while the spender differs. This compares address bytes only, without checksum, ownership, chain or contract verification; blank preserves existing behavior. No new selector, wallet connection, upload or UiPath execution. This practical follow-through extends the lesson, not the dated Cloud proof.
 
 2026-10-12: `/unsigned-evidence.html` adds dated UiPath observations of invented approval bytes: maximum exceeds 20 TEST; bounded equals it. Neither proves a swap. See `UNSIGNED-APPROVAL.md`.

@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "kind": "synthetic-local-inspector-capture",
+  "capturedFrom": "https://lab.psychoagent.com",
+  "sourceRevision": "00c756a8f260afd4741fbb53446551a25f812905",
+  "publicSourceRevision": "1611006d79a91dc90f359a2cb22bfdecd02fea92",
+  "reproductionPath": "/inspect.html",
+  "firstAction": "Click Example: 20 tokens",
+  "inputs": {
+    "example": "bounded",
+    "calldata": "0x095ea7b30000000000000000000000001111111111111111111111111111111111111111000000000000000000000000000000000000000000000001158e460913d00000",
+    "decimals": "18",
+    "claimedAmount": "20",
+    "expectedSpender": "0x2222222222222222222222222222222222222222"
+  },
+  "outputs": {
+    "amountLabel": "Matches the amount you entered",
+    "spenderLabel": "Different spender than you entered",
+    "decodedSpender": "0x1111111111111111111111111111111111111111"
+  },
+  "limitations": "Invented data. Address-byte comparison only, not checksum, chain, contract, owner or safety verification. No wallet, signing, transaction, or UiPath Cloud run. Screenshots are unedited result-panel crops, not whole-page or browser-chrome captures.",
+  "captures": [
+    {
+      "viewportWidth": 1280,
+      "viewportHeight": 900,
+      "filename": "spender-result-1280.png",
+      "pixelWidth": 565,
+      "pixelHeight": 1510,
+      "sha256": "b6cee6211929e7a2549b2c1646823d2865548fa8e4fc789b11f44321c0e509e9",
+      "observedAt": "2026-10-13T18:16:41.487Z",
+      "interactionRequests": 0,
+      "pageErrors": []
+    },
+    {
+      "viewportWidth": 390,
+      "viewportHeight": 900,
+      "filename": "spender-result-390.png",
+      "pixelWidth": 350,
+      "pixelHeight": 1974,
+      "sha256": "a8eabd390ed811c359ead54ec8262f9a7e9b486e7602cb8116db543c5a793e1c",
+      "observedAt": "2026-10-13T18:16:42.601Z",
+      "interactionRequests": 0,
+      "pageErrors": []
+    }
+  ]
+}

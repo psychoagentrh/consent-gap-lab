@@ -1,4 +1,5 @@
 .demo-captures{padding:30px clamp(20px,5vw,86px) 70px}.demo-captures img{max-width:100%;height:auto;border:1px solid #657b65}.demo-captures p{line-height:1.6}.demo-captures h2{margin-top:40px}
+.spender-demo-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}.spender-demo-grid figure{margin:0;min-width:0}.spender-demo-grid figcaption{line-height:1.6;color:#c0c8b7;margin:12px 0 28px}#spender-mismatch{scroll-margin-top:24px}#spender-mismatch p{max-width:900px}#spender-mismatch code{overflow-wrap:anywhere}#spender-demo-steps{padding-left:24px;max-width:850px;line-height:1.7}#spender-demo-steps li{margin:16px 0}@media(max-width:760px){.spender-demo-grid{grid-template-columns:1fr}}
 .compare-entry{background:transparent;color:#ccff64;border:1px solid #657b65;padding:13px 18px;margin:0 0 22px;text-align:left}
 .comparison{margin:0 clamp(20px,5vw,86px) 70px;border-top:1px solid #657b65;padding-top:38px;scroll-margin-top:24px}
 .comparison h2{font-size:clamp(34px,4vw,58px);line-height:1.05;letter-spacing:-.05em;margin:0 0 22px}

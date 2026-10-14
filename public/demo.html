@@ -4,8 +4,25 @@
 <body>
 <header><a class="brand" href="/">✳ PSYCHO <span>/ FIELD LAB 001</span></a><a href="/?view=compare#comparison">Try the comparison ↗</a></header>
 <main>
-<section class="intro"><p class="eyebrow">Authentic Chromium captures / 2026-10-05 to 2026-10-09</p><h1>Same button.<br><em>Different permission.</em></h1><p class="dek">Compare two invented approval requests with identical button copy. Share the comparison, or make your own prediction first. No wallet required.</p><div class="status">LOCAL SYNTHETIC DEMO <span>Not wallet screenshots or UiPath Cloud traces</span></div></section>
+<section class="intro"><p class="eyebrow">Authentic Chromium captures / 2026-10-05 to 2026-10-13</p><h1>The amount matches.<br><em>The spender doesn't.</em></h1><p class="dek">A request can encode exactly the 20 tokens you expected and still name a different spender. Try this invented example in the local inspector. No wallet required.</p><div class="status">LOCAL SYNTHETIC DEMO <span>Not wallet screenshots or UiPath Cloud traces</span></div></section>
 <section class="demo-captures">
+<section id="spender-mismatch" aria-labelledby="spender-demo-title">
+<h2 id="spender-demo-title">20 tokens. Two different addresses.</h2>
+<p>These unedited result-panel captures show two independent comparisons. The amount matches the entered 20; the encoded spender does not match the expected address. Neither result is a safety verdict.</p>
+<h3>Try the same result in three steps.</h3>
+<ol id="spender-demo-steps">
+<li><a id="try-spender-demo" href="/inspect.html">Open the inspector ↗</a> and choose <strong>Example: 20 tokens</strong>. This loads invented calldata, 18 assumed decimals and a button amount of 20.</li>
+<li>In <strong>Spender you expected</strong>, enter the invented address <code id="demo-expected-spender">0x2222222222222222222222222222222222222222</code>.</li>
+<li>Choose <strong>Decode locally</strong>. Read both results: <strong>Matches the amount you entered</strong> and <strong>Different spender than you entered</strong>. The request encodes <code>0x1111111111111111111111111111111111111111</code>.</li>
+</ol>
+<p>All decoding stays in your browser. No wallet connection, lookup, signing, transaction or visitor-triggered Cloud job. This compares address bytes only, not checksum, chain, contract, ownership or spender safety. Both addresses are invented, not recommendations.</p>
+<div class="spender-demo-grid">
+<figure><a href="/demo/spender-result-1280.png"><img src="/demo/spender-result-1280.png" width="565" height="1510" alt="Desktop inspector result: amount matches the entered 20, but the encoded repeated-1 spender differs from the expected repeated-2 address; verification limits remain visible."></a><figcaption>Desktop, 1280 CSS-pixel viewport. Unedited result-panel crop, 565 × 1510 pixels. Captured <time datetime="2026-10-13T18:16:41.487Z">October 13, 2026 at 18:16:41 UTC</time>. Select the image for full size.</figcaption></figure>
+<figure><a href="/demo/spender-result-390.png"><img src="/demo/spender-result-390.png" width="350" height="1974" alt="Mobile inspector result with the same independent amount-match and spender-mismatch labels, invented addresses and verification caveats."></a><figcaption>Mobile, 390 CSS-pixel viewport. Unedited result-panel crop, 350 × 1974 pixels. Captured <time datetime="2026-10-13T18:16:42.601Z">October 13, 2026 at 18:16:42 UTC</time>. Select the image for full size.</figcaption></figure>
+</div>
+<p>Captured from <code>https://lab.psychoagent.com</code> on workspace source <code>00c756a8f260afd4741fbb53446551a25f812905</code>, public source <a href="https://github.com/psychoagentrh/consent-gap-lab/tree/1611006d79a91dc90f359a2cb22bfdecd02fea92"><code>1611006d79a91dc90f359a2cb22bfdecd02fea92</code> ↗</a>. <a href="/demo/spender-capture.json">Inspect capture inputs, timestamps and image hashes ↗</a>. Historical captures are not live guarantees or UiPath attestations. Reproduce with <code>npm run capture:demo</code> in your own local checkout; that command replaces the capture files with a new local record.</p>
+<p>The separate <a href="/unsigned-evidence.html">dated owner-controlled UiPath byte observations ↗</a> check maximum versus bounded requests. They do not test this expected-spender UI comparison.</p>
+</section>
 <h2>Share the lesson, not your data / 2026-10-09</h2><p>One fixed example link opens the invented maximum-uint256 request versus a fictional 20-token button amount, with assumed 18 decimals. It decodes and compares locally. The copy button shares only the example name, not any pasted request or entered values. No wallet, RPC or Cloud run. <a href="/inspect.html?example=maximum-vs-20">Open the max vs 20 lesson in one click ↗</a></p>
 <a href="/demo/example-link-1280.png"><img src="/demo/example-link-1280.png" alt="Desktop Chromium capture of the invented maximum-versus-20 lesson opened from its allowlisted link, with a copied data-free example link and exact local difference." width="1280" loading="lazy"></a>
 <a href="/demo/example-link-390.png"><img src="/demo/example-link-390.png" alt="Mobile Chromium capture of the same fixed example link and local approval comparison with input and output stacked vertically." width="390" loading="lazy"></a>
@@ -22,7 +39,7 @@
 <a href="/demo/1280-unlimited.png"><img src="/demo/1280-unlimited.png" alt="Earlier desktop capture of specimen A revealing unlimited TEST allowance." width="1280" loading="lazy"></a>
 <a href="/demo/1280-bounded.png"><img src="/demo/1280-bounded.png" alt="Earlier desktop capture of specimen B revealing a 20 TEST allowance, not a completed swap." width="1280" loading="lazy"></a>
 <p><a href="/demo/390-unlimited.png">Earlier mobile specimen A</a> · <a href="/demo/390-bounded.png">Earlier mobile specimen B</a></p>
-<p>Captured from the local build by the checked-in Playwright behavior tests. Images show invented teaching data, not live guarantees. The <a href="https://github.com/psychoagentrh/consent-gap-lab">source and reproduction instructions</a> are public.</p>
+<p>Earlier gallery images were captured from local builds by the checked-in Playwright behavior tests. The October 13 spender captures came from the deployed inspector as identified above. Images show invented teaching data, not live guarantees. The <a href="https://github.com/psychoagentrh/consent-gap-lab">source and reproduction instructions</a> are public.</p>
 <p><a href="/">Make a prediction ↗</a></p>
 </section>
 </main>
