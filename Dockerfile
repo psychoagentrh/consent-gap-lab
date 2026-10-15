@@ -5,6 +5,7 @@ RUN npm ci --omit=dev && addgroup -S app && adduser -S app -G app
 COPY --chown=app:app public ./public
 COPY --chown=app:app server.js ./server.js
 COPY --chown=app:app uipath/unsigned-approval-fixture.js ./uipath/unsigned-approval-fixture.js
+COPY --chown=app:app uipath/unsigned-approval-contract.js ./uipath/unsigned-approval-contract.js
 USER app
 ENV NODE_ENV=production PORT=8080
 EXPOSE 8080
