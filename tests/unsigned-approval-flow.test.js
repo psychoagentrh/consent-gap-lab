@@ -22,7 +22,9 @@ const vars = (id,body) => ({start:{output:{approvalCase:id}},readOwnedSyntheticS
 for (const id of APPROVAL_CASES) {
   test('embedded unsigned-byte evaluator and all End mappings agree for ' + id + ' (local JS, not Cloud)', () => {
     const body = fixture(id);
-    const result = execute(vars(id,JSON.stringify(body)));
+    const scriptResult = execute(vars(id,JSON.stringify(body)));
+    const outputVars = {[script.id]:{output:scriptResult}};
+    const result = Object.fromEntries(Object.entries(end.outputs).map(([name,value]) => [name,new Function('$vars','return ' + value.source.slice(4))(outputVars)]));
     const separate = evaluateUnsignedApproval(body,id);
     const { observedAt, ...stable } = result;
     const { observedAt:otherTime, ...otherStable } = separate;
@@ -33,7 +35,7 @@ for (const id of APPROVAL_CASES) {
     assert.equal(result.approvalIsSwap,false);
     assert.equal(result.payloadDigest,body.payloadDigest);
     assert.match(result.method,/not browser automation or a signed transaction/);
-    const outputVars = {evaluateSyntheticPermission1:{output:result}};
+
     const outputs = Object.fromEntries(Object.entries(end.outputs).map(([name,value]) => [name,new Function('$vars','return ' + value.source.slice(4))(outputVars)]));
     assert.equal(outputs.approvalCaseObserved,id);
     assert.equal(outputs.spender,result.spender);

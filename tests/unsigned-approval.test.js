@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { unsignedApprovalFixture } from '../uipath/unsigned-approval-fixture.js';
 import { evaluateUnsignedApproval } from '../uipath/evaluate-unsigned-approval.js';
+import { UNSIGNED_APPROVAL_OUTPUTS } from '../uipath/unsigned-approval-contract.js';
 import { approvalExamples, MAX_UINT256 } from '../public/approval.js';
 
 function fixture(id) {
@@ -23,7 +24,9 @@ for (const id of ['maximum', 'bounded']) {
     assert.equal(output.payloadDigest, data.payloadDigest);
     assert.ok(Number.isFinite(Date.parse(output.observedAt)));
     assert.match(output.method, /not browser automation or a signed transaction/);
-    assert.deepEqual(Object.keys(output), ['approvalCaseObserved','spender','rawAllowance','claimedRawAmount','comparison','scopeExceedsButton','approvalIsSwap','verdict','fixtureSchema','payloadDigest','observedAt','method']);
+    assert.deepEqual(Object.keys(output), UNSIGNED_APPROVAL_OUTPUTS);
+    assert.equal(output.expectedSpender, '');
+    assert.equal(output.spenderComparison, 'not-provided');
   });
 }
 test('relation is derived from bytes, not the fixture case name or alleged scope', () => {

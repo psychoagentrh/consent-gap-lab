@@ -14,12 +14,12 @@
     {
       "id": "unsigned-approval-observation",
 
-      "package": "uipath/packages/Psycho.UnsignedApproval.flow.Flow.1.0.1.nupkg",
+      "package": "uipath/packages/Psycho.UnsignedApproval.flow.Flow.1.1.0.nupkg",
 
       "inputs": {
-        "approvalCase": { "type": "string", "enum": ["maximum", "bounded"] }
+        "approvalCase": { "type": "string", "enum": ["maximum", "bounded", "spender-match", "spender-mismatch"] }
       },
-      "outputs": ["approvalCaseObserved", "spender", "rawAllowance", "claimedRawAmount", "comparison", "scopeExceedsButton", "approvalIsSwap", "verdict", "fixtureSchema", "payloadDigest", "observedAt", "method"]
+      "outputs": ["approvalCaseObserved", "spender", "expectedSpender", "spenderComparison", "rawAllowance", "claimedRawAmount", "comparison", "scopeExceedsButton", "approvalIsSwap", "verdict", "fixtureSchema", "payloadDigest", "observedAt", "method"]
     }
   ]
 }

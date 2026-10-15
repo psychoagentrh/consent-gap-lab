@@ -7,6 +7,13 @@ import { app } from '../server.js';
 import { reviewHeroGradient } from './gradient-contrast.mjs';
 
 // This is an automated regression, not a WCAG certification or a screen-reader review.
+// An optional single-width shard keeps each bounded workspace command short.
+// Default runs retain all three widths and every state/negative control.
+const supportedWidths = [1280, 390, 320];
+const requestedWidth = process.env.CONSENT_GAP_A11Y_WIDTH;
+assert.ok(requestedWidth === undefined || supportedWidths.map(String).includes(requestedWidth),
+  'CONSENT_GAP_A11Y_WIDTH must be exactly 1280, 390 or 320');
+const widths = requestedWidth === undefined ? supportedWidths : [Number(requestedWidth)];
 const server = http.createServer(app);
 await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
 const base = process.env.CONSENT_GAP_BASE_URL || `http://127.0.0.1:${server.address().port}`;
@@ -54,7 +61,7 @@ try {
     await controlContext.close();
   }
   // 320 CSS pixels is the narrow reflow target; 390 and 1280 retain phone/desktop coverage.
-  for (const width of [1280, 390, 320]) {
+  for (const width of widths) {
     const context = await browser.newContext({ viewport: { width, height: 920 } });
     const page = await context.newPage();
     await page.goto(base, { waitUntil: 'networkidle' });

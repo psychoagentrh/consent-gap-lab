@@ -8,8 +8,9 @@ import { evaluateUnsignedApproval } from '../uipath/evaluate-unsigned-approval.j
 const text = path => readFile(new URL('../' + path, import.meta.url), 'utf8');
 const evidence = JSON.parse(await text('public/unsigned-owner-observations.json'));
 const page = await text('public/unsigned-evidence.html');
-const flow = JSON.parse(await text('uipath/ConsentGapSolution/Psycho_UnsignedApproval/Psycho_UnsignedApproval.flow'));
-const outputs = Object.keys(flow.nodes.find(node => node.type === 'core.control.end').outputs).sort();
+// Pin the historical contract, not today's portable Flow. New End fields must not
+// be retroactively inserted into the October 12 publication.
+const outputs = ['approvalCaseObserved','spender','rawAllowance','claimedRawAmount','comparison','scopeExceedsButton','approvalIsSwap','verdict','fixtureSchema','payloadDigest','observedAt','method'].sort();
 const observations = evidence.observations;
 
 // These checks reproduce the published fixture interpretation, not a new Cloud run
@@ -39,7 +40,9 @@ test('recorded approval-byte outputs and digests agree with the unchanged owned 
     const data = unsignedApprovalFixture(input.approvalCase);
     const payloadDigest = createHash('sha256').update(JSON.stringify(data)).digest('hex');
     const reproduced = evaluateUnsignedApproval({...data,payloadDigest}, input.approvalCase);
-    const {observedAt:actualTime, ...actual} = reproduced;
+    const {observedAt:actualTime, expectedSpender, spenderComparison, ...actual} = reproduced;
+    assert.equal(expectedSpender, '');
+    assert.equal(spenderComparison, 'not-provided');
     const {observedAt:recordedTime, ...historical} = recorded;
     assert.ok(Number.isFinite(Date.parse(actualTime)));
     assert.equal(recordedTime, times[input.approvalCase]);
@@ -66,7 +69,12 @@ test('current guide links new byte evidence while keeping historical JSON-label 
   for (const path of ['public/build.html','public/index.html','README.md','BUILDERS.md','UNSIGNED-APPROVAL.md']) {
     const content = await text(path);
     assert.ok(content.includes('unsigned-evidence.html'), path);
-    assert.doesNotMatch(content, /Cloud proof pending\.|Cloud proof is pending|run receipt is still pending|Its Cloud proof is\s+pending|Live UiPath proof is pending/i);
+    if (path === 'UNSIGNED-APPROVAL.md') {
+      assert.ok(content.includes('Version 1.1.0 spender-aware Cloud proof is pending'));
+      assert.ok(content.includes('Two distinct owner-controlled Cloud inputs succeeded'));
+    } else {
+      assert.doesNotMatch(content, /Cloud proof pending\.|Cloud proof is pending|run receipt is still pending|Its Cloud proof is\s+pending|Live UiPath proof is pending/i);
+    }
   }
   const guide = await text('public/build.html');
   assert.ok(guide.includes('href="/evidence.html"'));

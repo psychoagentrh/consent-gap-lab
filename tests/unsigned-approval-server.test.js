@@ -10,7 +10,7 @@ const server = http.createServer(app);
 await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
 test.after(() => server.close());
 const base = `http://127.0.0.1:${server.address().port}`;
-for (const id of ['maximum', 'bounded']) {
+for(const id of ['maximum','bounded','spender-match','spender-mismatch']) {
   test(`read-only ${id} unsigned fixture has reproducible digest and decodable bytes`, async () => {
     const response = await fetch(base + '/api/unsigned-approvals/' + id);
     assert.equal(response.status, 200);
