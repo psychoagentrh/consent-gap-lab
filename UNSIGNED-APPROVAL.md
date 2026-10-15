@@ -4,7 +4,7 @@
 
 The original owner-run Flow reads a synthetic JSON permission label. This extension
 reads actual, invented `approve(address,uint256)` transaction calldata and computes
-the allowance comparison from its uint256 bytes. Version 1.1.0 adds a separate
+the allowance comparison from its uint256 bytes. Version 1.1.1 includes a separate
 comparison against an explicitly supplied, invented expected-spender address.
 An amount can match while the spender differs. The public inspector still works
 locally without a wallet, credentials or a Cloud job.
@@ -23,17 +23,20 @@ This is a manually curated, unsigned publication, not an independently verifiabl
 UiPath attestation or a live guarantee. The October 6 observations belong to the
 original `consent-observation` workflow, not this extension.
 
-**Version 1.1.0 spender-aware Cloud proof is pending.** Local embedded-script tests,
+**Version 1.1.1 spender-aware Cloud proof is pending.** Local embedded-script tests,
 a four-case HTTP rehearsal, strict validation and a packed package do not establish
-Cloud execution of the new source. The older observations do not test its two new
-outputs, the newer browser inspector or visitor-pasted inputs. Public UiPath
+Cloud execution of the new source. The Flow now returns twelve Cloud outputs; the
+local evaluator additionally returns schema and no-swap diagnostics. The older
+observations do not test the new expected-spender comparison or visitor-pasted
+inputs. Public UiPath
 execution remains disabled; a visitor action cannot start an owner Cloud run.
 
 ## Owned inputs and useful output
 
 All four cases have a synthetic button claiming “Swap 20 SYN”, an invented token
-contract destination and 18 assumed decimals. All return `approvalIsSwap=false`.
-An approval does not prove a swap.
+contract destination and 18 assumed decimals. The local evaluator retains
+`approvalIsSwap=false`; this diagnostic is not part of the current Cloud output
+envelope. An approval does not prove a swap.
 
 | `approvalCase` | Amount `comparison` | `scopeExceedsButton` | `spenderComparison` | Fixture schema |
 | --- | --- | --- | --- | --- |
@@ -51,11 +54,17 @@ contract behavior. Missing or malformed v2 expectations fail closed, never becom
 an equality result. V1 cases preserve their historical fixture bytes and omit the
 expectation; they return an empty `expectedSpender` and `not-provided`.
 
-The current fourteen-output contract is:
+The current twelve-output Cloud contract is:
 
 - `approvalCaseObserved`, `spender`, `expectedSpender`, `spenderComparison`;
 - `rawAllowance`, `claimedRawAmount`, `comparison`, `scopeExceedsButton`;
-- `approvalIsSwap`, `verdict`, `fixtureSchema`, `payloadDigest`, `observedAt`, `method`.
+- `verdict`, `payloadDigest`, `observedAt`, `method`.
+
+Version 1.1.0's fourteen-output manifest was rejected by the publication gateway.
+Version 1.1.1 keeps the independently useful amount/spender fields in a bounded
+twelve-output envelope. `fixtureSchema` and `approvalIsSwap` remain local evaluator
+diagnostics, not Cloud outputs; schema and unsigned/unsubmitted validation still
+run before any result. This change is not evidence of Cloud execution.
 
 `scopeExceedsButton` refers only to the amount. A false value does not mean the
 spender matches or the request is safe. Equal addresses are not a safety verdict.
@@ -87,7 +96,7 @@ npm test
 node uipath/build-unsigned-flow.mjs --check
 node uipath/rehearse-unsigned-approval.mjs
 uip maestro flow validate uipath/ConsentGapSolution/Psycho_UnsignedApproval/Psycho_UnsignedApproval.flow --strict-expressions
-uip maestro flow pack uipath/ConsentGapSolution/Psycho_UnsignedApproval /tmp/consent-gap-unsigned-pack --name Psycho.UnsignedApproval --version 1.1.0
+uip maestro flow pack uipath/ConsentGapSolution/Psycho_UnsignedApproval /tmp/consent-gap-unsigned-pack --name Psycho.UnsignedApproval --version 1.1.1
 ```
 
 The rehearsal starts an ephemeral loopback fixture service, executes the exact
@@ -95,7 +104,7 @@ embedded Flow script and End mappings for all four cases, checks results and
 payload digests, and stops the service. It is not a local Maestro runtime or a
 Cloud job. Strict validation and packing establish authoring mechanics, not
 tenant compatibility or execution. The committed package is
-`Psycho.UnsignedApproval.flow.Flow.1.1.0.nupkg`.
+`Psycho.UnsignedApproval.flow.Flow.1.1.1.nupkg`.
 
 `uipath/unsigned-approval-contract.js` is the shared case/output contract.
 `uipath/build-unsigned-flow.mjs` deterministically embeds that contract, the strict

@@ -68,7 +68,7 @@ uip maestro flow validate uipath/ConsentGapSolution/ConsentGap/Psycho_ConsentGap
 uip maestro flow pack uipath/ConsentGapSolution/ConsentGap /tmp/consent-gap-pack --name Psycho.ConsentGap --version 1.0.0
 ```
 
-Local validation and packing require no login and prove package mechanics, not Cloud execution. For the unsigned Flow's four-case rehearsal, version 1.1.0 package and fourteen-output contract, use [UNSIGNED-APPROVAL.md](UNSIGNED-APPROVAL.md). Its new expected-spender comparison has local proof only; the October 12 Cloud observations above retain their original twelve outputs and source revision. Cloud reproduction needs your own suitable UiPath tenant and license. Public execution remains disabled; feedback is not execution permission.
+Local validation and packing require no login and prove package mechanics, not Cloud execution. For the unsigned Flow's four-case rehearsal, version 1.1.1 package and twelve-output Cloud contract, use [UNSIGNED-APPROVAL.md](UNSIGNED-APPROVAL.md). Its new expected-spender comparison has local proof only; the October 12 Cloud observations above retain their original twelve outputs and source revision. Cloud reproduction needs your own suitable UiPath tenant and license. Public execution remains disabled; feedback is not execution permission.
 
 ## Safety and operating boundaries
 

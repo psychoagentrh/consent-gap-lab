@@ -31,7 +31,7 @@ for (const id of ['spender-match', 'spender-mismatch']) {
     assert.equal(output.spenderComparison, id === 'spender-match' ? 'equal' : 'different');
     assert.equal(output.comparison, 'equal');
     assert.equal(output.scopeExceedsButton, false, 'amount-only output does not certify full intent');
-    assert.equal(output.approvalIsSwap, false);
+    assert.equal(evaluateUnsignedApproval(payload,id).approvalIsSwap, false);
     assert.match(output.verdict, id === 'spender-match' ? /not a safety verdict/ : /differs from/);
     assert.deepEqual(Object.keys(output), UNSIGNED_APPROVAL_OUTPUTS);
   });
@@ -107,7 +107,11 @@ test('manifest, typed End fields and builder instructions share the current cont
   const workflow = manifest.workflows.find(item => item.id === 'unsigned-approval-observation');
   assert.deepEqual(workflow.inputs.approvalCase.enum, ['maximum','bounded','spender-match','spender-mismatch']);
   assert.deepEqual(workflow.outputs, UNSIGNED_APPROVAL_OUTPUTS);
-  assert.equal(workflow.package, 'uipath/packages/Psycho.UnsignedApproval.flow.Flow.1.1.0.nupkg');
+  assert.equal(workflow.package, 'uipath/packages/Psycho.UnsignedApproval.flow.Flow.1.1.1.nupkg');
+  assert.equal(workflow.outputs.length,12, 'bounded Cloud envelope retains both spender fields');
+  assert.equal(new Set(workflow.outputs).size,12);
+  assert.equal(workflow.outputs.includes('approvalIsSwap'),false);
+  assert.equal(workflow.outputs.includes('fixtureSchema'),false);
   assert.ok(fs.statSync(new URL('../' + workflow.package, import.meta.url)).size > 0);
   for (const variable of flow.variables.globals.filter(item => item.direction === 'out')) {
     assert.equal(variable.type, ['scopeExceedsButton','approvalIsSwap'].includes(variable.id) ? 'boolean' : 'string');
@@ -115,9 +119,9 @@ test('manifest, typed End fields and builder instructions share the current cont
   const guide = fs.readFileSync(new URL('../UNSIGNED-APPROVAL.md', import.meta.url), 'utf8');
   for (const name of UNSIGNED_APPROVAL_OUTPUTS) assert.ok(guide.includes('`' + name + '`'), name);
   for (const id of workflow.inputs.approvalCase.enum) assert.ok(guide.includes('`' + id + '`'), id);
-  for (const text of ['--name Psycho.UnsignedApproval --version 1.1.0', 'build-unsigned-flow.mjs --check',
+  for (const text of ['--name Psycho.UnsignedApproval --version 1.1.1', 'build-unsigned-flow.mjs --check',
     'all four cases', 'does not independently verify the digest', 'not a safety verdict',
-    'Version 1.1.0 spender-aware Cloud proof is pending', 'twelve-output publications remain unchanged']) {
+    'Version 1.1.1 spender-aware Cloud proof is pending', 'twelve-output publications remain unchanged']) {
     assert.ok(guide.includes(text), text);
   }
 });

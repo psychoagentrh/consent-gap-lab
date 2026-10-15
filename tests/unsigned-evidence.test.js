@@ -70,7 +70,7 @@ test('current guide links new byte evidence while keeping historical JSON-label 
     const content = await text(path);
     assert.ok(content.includes('unsigned-evidence.html'), path);
     if (path === 'UNSIGNED-APPROVAL.md') {
-      assert.ok(content.includes('Version 1.1.0 spender-aware Cloud proof is pending'));
+      assert.ok(content.includes('Version 1.1.1 spender-aware Cloud proof is pending'));
       assert.ok(content.includes('Two distinct owner-controlled Cloud inputs succeeded'));
     } else {
       assert.doesNotMatch(content, /Cloud proof pending\.|Cloud proof is pending|run receipt is still pending|Its Cloud proof is\s+pending|Live UiPath proof is pending/i);

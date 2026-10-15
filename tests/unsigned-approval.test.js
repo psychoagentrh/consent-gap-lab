@@ -24,7 +24,9 @@ for (const id of ['maximum', 'bounded']) {
     assert.equal(output.payloadDigest, data.payloadDigest);
     assert.ok(Number.isFinite(Date.parse(output.observedAt)));
     assert.match(output.method, /not browser automation or a signed transaction/);
-    assert.deepEqual(Object.keys(output), UNSIGNED_APPROVAL_OUTPUTS);
+    assert.deepEqual(Object.keys(output).sort(), [...UNSIGNED_APPROVAL_OUTPUTS, 'approvalIsSwap', 'fixtureSchema'].sort());
+    assert.equal(UNSIGNED_APPROVAL_OUTPUTS.length, 12);
+    assert.equal(output.fixtureSchema, data.schema);
     assert.equal(output.expectedSpender, '');
     assert.equal(output.spenderComparison, 'not-provided');
   });

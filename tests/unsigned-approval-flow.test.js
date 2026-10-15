@@ -4,6 +4,7 @@ import { readFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { unsignedApprovalFixture, APPROVAL_CASES } from '../uipath/unsigned-approval-fixture.js';
 import { evaluateUnsignedApproval } from '../uipath/evaluate-unsigned-approval.js';
+import { UNSIGNED_APPROVAL_OUTPUTS } from '../uipath/unsigned-approval-contract.js';
 
 const text = async path => readFile(new URL('../' + path, import.meta.url), 'utf8');
 const flow = JSON.parse(await text('uipath/ConsentGapSolution/Psycho_UnsignedApproval/Psycho_UnsignedApproval.flow'));
@@ -27,12 +28,14 @@ for (const id of APPROVAL_CASES) {
     const result = Object.fromEntries(Object.entries(end.outputs).map(([name,value]) => [name,new Function('$vars','return ' + value.source.slice(4))(outputVars)]));
     const separate = evaluateUnsignedApproval(body,id);
     const { observedAt, ...stable } = result;
-    const { observedAt:otherTime, ...otherStable } = separate;
+    const { observedAt:otherTime, ...otherStable } = Object.fromEntries(UNSIGNED_APPROVAL_OUTPUTS.map(key => [key,separate[key]]));
     assert.deepEqual(stable,otherStable);
     assert.ok(Number.isFinite(Date.parse(observedAt)));
     assert.equal(result.approvalCaseObserved,id);
     assert.equal(result.scopeExceedsButton,id === 'maximum');
-    assert.equal(result.approvalIsSwap,false);
+    assert.equal(separate.approvalIsSwap,false, 'local diagnostic remains validated without expanding the Cloud envelope');
+    assert.equal(Object.hasOwn(result,'approvalIsSwap'),false);
+    assert.equal(Object.hasOwn(result,'fixtureSchema'),false);
     assert.equal(result.payloadDigest,body.payloadDigest);
     assert.match(result.method,/not browser automation or a signed transaction/);
 

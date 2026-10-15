@@ -28,7 +28,9 @@ try {
     const output = Object.fromEntries(Object.entries(flow.nodes.at(-1).outputs).map(([name,mapping]) => [name,new Function('$vars','return ' + mapping.source.slice(4))({[script.id]:{output:scriptOutput}})]));
     assert.equal(output.comparison, approvalCase === 'maximum' ? 'larger' : 'equal');
     assert.equal(output.scopeExceedsButton, approvalCase === 'maximum');
-    assert.equal(output.approvalIsSwap, false);
+    assert.equal(body.transactionSigned,false);
+    assert.equal(body.transactionSubmitted,false);
+    assert.equal(Object.hasOwn(output,'approvalIsSwap'),false);
     assert.equal(output.spenderComparison, approvalCase === 'spender-match' ? 'equal' : approvalCase === 'spender-mismatch' ? 'different' : 'not-provided');
     assert.equal(output.expectedSpender, body.expectedSpender || '');
     assert.equal(output.payloadDigest, payloadDigest);

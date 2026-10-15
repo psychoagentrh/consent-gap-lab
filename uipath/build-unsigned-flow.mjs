@@ -26,7 +26,7 @@ export function buildUnsignedFlow() {
   http.inputs.detail.bodyParameters.url = `=js:${APPROVAL_CASES.map(id => `$vars.start.output.approvalCase === ${JSON.stringify(id)} ? ${JSON.stringify(base + id)} : `).join('')}${JSON.stringify(base + 'invalid')}`;
   script.display.label = 'Decode approval and compare amount and supplied spender';
   // SDK 1.202.1 derives types from TypeScript quick-info text, which truncates
-  // a long object with 14 verbose keys. Short internal slots keep all 14 fields
+  // a long object with verbose keys. Short internal slots keep all 12 fields
   // strictly inferred. Public typed End names stay descriptive and unchanged.
   script.inputs.script = `${contract}\n\n${decoder}\n\n${evaluator}\n\nconst observation = evaluateUnsignedApproval($vars[${JSON.stringify(http.id)}].output.body, $vars.start.output.approvalCase);\nreturn {\n${UNSIGNED_APPROVAL_OUTPUTS.map((key,index) => `  f${index}: observation.${key}`).join(',\n')}\n};`;
   const outputKey = `$vars.${script.id}.output`;
