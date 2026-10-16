@@ -47,7 +47,9 @@ test('demo preserves capture provenance and separates local UI from UiPath obser
   assert.ok(html.includes(record.inputs.expectedSpender));
   assert.ok(html.includes(record.outputs.amountLabel));
   assert.ok(html.includes(record.outputs.spenderLabel));
-  assert.match(html, /They do not test this expected-spender UI comparison/);
+  assert.match(html, /They do not test this browser UI or authenticate a user's intended address/);
+  assert.match(html, /October 15 owner-controlled UiPath observations/);
+  assert.match(html, /href="\/spender-evidence.html"/);
   assert.match(html, /Historical captures are not live guarantees or UiPath attestations/);
   assert.match(html, /not checksum, chain, contract, ownership or spender safety/);
 });

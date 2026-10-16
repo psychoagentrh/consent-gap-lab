@@ -14,6 +14,26 @@ Compare what a crypto button claims with the scope of an invented request. The p
 - **Evidence explorer and prediction replay:** compare published, dated owner observations. Replay is local JavaScript, not a new UiPath run.
 - **Journey suggestions:** optional bounded editorial feedback, not a Cloud-job queue or a promise to test a target. No visitor interaction directly or indirectly starts a Cloud job.
 
+## Recorded spender-comparison evidence
+
+[Read the October 15 spender results](https://lab.psychoagent.com/spender-evidence.html)
+or inspect [their redacted JSON](public/spender-owner-observations.json). Two
+owner-controlled UiPath Maestro runs returned `comparison=equal` for the same
+20-token amount. `spender-match` returned `spenderComparison=equal` at
+`2026-10-15T18:43:34.676Z`; `spender-mismatch` returned `different` at
+`2026-10-15T18:49:28.601Z`. Both requests encode the same invented spender; only
+the supplied synthetic expectation changes. Equal addresses are not a safety verdict.
+
+Tested workspace/Flow revision: `e2c6632c06561f184778821b3c9d01fb27909818`.
+Immutable public source: `055dc58b184778d3553846f4030d3a8f48262c6d`.
+Package: `1.1.1`. [Inspect/reproduce the source](UNSIGNED-APPROVAL.md).
+This is a manually curated, unsigned publication of twelve allowlisted outputs,
+not an independently verifiable UiPath attestation. The Flow validates digest
+format; local re-evaluation recomputes it separately. No browser/wallet automation,
+signing, swap, visitor-input test or authenticated user intent is proved.
+[Try the separate three-step local lesson](https://lab.psychoagent.com/demo.html#spender-mismatch).
+The October 12 publication below is unchanged.
+
 ## Recorded unsigned approval-byte evidence
 
 [Read the October 12 results](https://lab.psychoagent.com/unsigned-evidence.html) or inspect [their redacted JSON](public/unsigned-owner-observations.json). Two owner-controlled UiPath Maestro runs decoded invented unsigned approval requests behind the same synthetic “Swap 20 SYN” button:

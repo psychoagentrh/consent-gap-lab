@@ -23,13 +23,20 @@ This is a manually curated, unsigned publication, not an independently verifiabl
 UiPath attestation or a live guarantee. The October 6 observations belong to the
 original `consent-observation` workflow, not this extension.
 
-**Version 1.1.1 spender-aware Cloud proof is pending.** Local embedded-script tests,
-a four-case HTTP rehearsal, strict validation and a packed package do not establish
-Cloud execution of the new source. The Flow now returns twelve Cloud outputs; the
-local evaluator additionally returns schema and no-swap diagnostics. The older
-observations do not test the new expected-spender comparison or visitor-pasted
-inputs. Public UiPath
-execution remains disabled; a visitor action cannot start an owner Cloud run.
+**Version 1.1.1 returned two distinct, verified owner-controlled Cloud observations**
+on October 15: `spender-match` and `spender-mismatch`. Both amounts were `equal`;
+spender comparisons were `equal` and `different`, respectively. Read the
+[separate dated spender evidence](https://lab.psychoagent.com/spender-evidence.html)
+or [its twelve-output JSON](public/spender-owner-observations.json). Tested
+workspace/Flow revision: `e2c6632c06561f184778821b3c9d01fb27909818`;
+immutable public source: `055dc58b184778d3553846f4030d3a8f48262c6d`.
+These historical owned-fixture HTTP runs are not browser/wallet tests, address
+safety verdicts, authenticated intent or evidence about visitor-pasted inputs.
+The local evaluator additionally returns schema and no-swap diagnostics; these
+are not in the twelve-output Cloud envelope. The October 12 evidence remains
+unchanged and does not retroactively prove the newer spender comparison.
+Public UiPath execution remains disabled; a visitor action cannot start an owner
+Cloud run.
 
 ## Owned inputs and useful output
 

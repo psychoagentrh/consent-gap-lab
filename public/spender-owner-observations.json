@@ -1,0 +1,49 @@
+{
+  "schema": "consent-gap/spender-owner-observations-v1",
+  "workflow": "unsigned-approval-observation",
+  "packageVersion": "1.1.1",
+  "testedWorkspaceRevision": "e2c6632c06561f184778821b3c9d01fb27909818",
+  "publicSourceRevision": "055dc58b184778d3553846f4030d3a8f48262c6d",
+  "provenance": "Manually curated from two gateway-verified owner-run receipts. An unsigned, redacted publication, not an independently verifiable UiPath attestation.",
+  "redaction": "Only the bounded approvalCase input and twelve allowlisted outputs are included. All addresses and transaction bytes belong to invented fixtures. Tenant identifiers, job links, operation identifiers, credentials and raw traces are omitted.",
+  "observations": [
+    {
+      "input": {
+        "approvalCase": "spender-match"
+      },
+      "outputs": {
+        "approvalCaseObserved": "spender-match",
+        "spender": "0x1111111111111111111111111111111111111111",
+        "expectedSpender": "0x1111111111111111111111111111111111111111",
+        "spenderComparison": "equal",
+        "rawAllowance": "20000000000000000000",
+        "claimedRawAmount": "20000000000000000000",
+        "comparison": "equal",
+        "scopeExceedsButton": false,
+        "verdict": "Unsigned approval amount equals the synthetic button amount; no swap is proved. The decoded spender equals the supplied synthetic expectation; address equality is not a safety verdict.",
+        "payloadDigest": "8edf7f5780e518b795f67d36c3188b8b17bd85dedf510c15405b78f2766414a2",
+        "observedAt": "2026-10-15T18:43:34.676Z",
+        "method": "HTTP JSON fixture plus canonical approve calldata decoding; not browser automation or a signed transaction"
+      }
+    },
+    {
+      "input": {
+        "approvalCase": "spender-mismatch"
+      },
+      "outputs": {
+        "approvalCaseObserved": "spender-mismatch",
+        "spender": "0x1111111111111111111111111111111111111111",
+        "expectedSpender": "0x3333333333333333333333333333333333333333",
+        "spenderComparison": "different",
+        "rawAllowance": "20000000000000000000",
+        "claimedRawAmount": "20000000000000000000",
+        "comparison": "equal",
+        "scopeExceedsButton": false,
+        "verdict": "Unsigned approval amount equals the synthetic button amount; no swap is proved. The decoded spender differs from the supplied synthetic expectation.",
+        "payloadDigest": "d72ddd8acae7659cb1b8df040fce6b834668701fad20b1827fb6dfd6c72b1469",
+        "observedAt": "2026-10-15T18:49:28.601Z",
+        "method": "HTTP JSON fixture plus canonical approve calldata decoding; not browser automation or a signed transaction"
+      }
+    }
+  ]
+}

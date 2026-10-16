@@ -121,7 +121,7 @@ test('manifest, typed End fields and builder instructions share the current cont
   for (const id of workflow.inputs.approvalCase.enum) assert.ok(guide.includes('`' + id + '`'), id);
   for (const text of ['--name Psycho.UnsignedApproval --version 1.1.1', 'build-unsigned-flow.mjs --check',
     'all four cases', 'does not independently verify the digest', 'not a safety verdict',
-    'Version 1.1.1 spender-aware Cloud proof is pending', 'twelve-output publications remain unchanged']) {
+    'Version 1.1.1 returned two distinct, verified owner-controlled Cloud observations', 'twelve-output publications remain unchanged']) {
     assert.ok(guide.includes(text), text);
   }
 });

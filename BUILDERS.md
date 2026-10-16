@@ -8,6 +8,13 @@ Start with the [90-second walkthrough](https://lab.psychoagent.com/build.html). 
 - [Open the fixed maximum-versus-20 approval example](https://lab.psychoagent.com/inspect.html?example=maximum-vs-20). The local inspector decodes standard ERC-20 `approve(address,uint256)` calldata. It does not identify the chain/token from those bytes, authenticate a spender or predict a later swap.
 - [Explore the historical UiPath outputs](https://lab.psychoagent.com/evidence.html). Read each observation time and the exact tested Flow revision. These were owner-controlled HTTP JSON observations of our synthetic fixtures, not browser runs or wallet audits. The outputs do not prove the newer comparison, inspector or this guide.
 
+The [October 15 spender evidence](https://lab.psychoagent.com/spender-evidence.html)
+adds two separately dated owner runs for version 1.1.1. Both allowances matched;
+one supplied synthetic spender expectation differed. Inspect the redacted outputs,
+exact tested source and timestamps. These HTTP observations do not test the local
+inspector UI, authenticate a user-supplied expectation or prove address safety.
+The October 12 evidence remains an unchanged, separate publication.
+
 ## 2. Inspect the four-node Flow
 
 The [unsigned approval-byte observation Flow](UNSIGNED-APPROVAL.md) reads

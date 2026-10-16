@@ -32,7 +32,10 @@ try {
       if(!await item.evaluate(el=>el.open)) await item.locator('summary').click();
       assert.equal(await item.evaluate(el=>el.open),true);
     }
-    assert.equal(await details.count(),5);
+    assert.equal(await details.count(),6);
+    assert.equal(await page.locator('#spender-cloud-proof').evaluate(el=>el.open),true);
+    assert.ok((await page.locator('#spender-cloud-proof').innerText()).includes('Two owner-run Cloud observations verified on October 15.'));
+    assert.equal(await page.locator('#spender-cloud-proof a').first().getAttribute('href'),'/spender-evidence.html');
     assert.equal(await page.locator('#unsigned-byte-spike').evaluate(el=>el.open),true);
     assert.ok(await page.locator('#unsigned-byte-spike').innerText().then(text=>text.includes('Two owner-run Cloud observations verified on October 12.')));
     assert.equal(await page.locator('#unsigned-byte-spike a').first().getAttribute('href'),'/unsigned-evidence.html');
@@ -57,7 +60,7 @@ try {
     assert.deepEqual(errors,[]);
     assert.ok(requests.every(r=>r.method==='GET'&&r.url.startsWith(base+'/')),'walkthrough made nonlocal or mutating request');
     const lesson=await page.locator('a[href^="/demo.html"]').first().getAttribute('href');
-    assert.match(lesson,/^\/demo\.html(?:\?case=unlimited)?$/);
+    assert.match(lesson,/^\/demo\.html(?:\?case=unlimited|#spender-mismatch)?$/);
     const response=await context.request.get(base+lesson);
     assert.equal(response.status(),200);
     const evidence=await context.request.get(base+'/evidence.html');
