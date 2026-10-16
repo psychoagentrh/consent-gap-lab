@@ -49,7 +49,9 @@ These are manually curated, unsigned publications of twelve allowlisted outputs 
 
 ### Older JSON-label evidence is a separate family
 
-[October 6 observations](https://lab.psychoagent.com/evidence.html) and [redacted JSON](public/owner-observations.json) demonstrate the older fixed-host fixture-label classifier, not unsigned calldata decoding. Its tested workspace was `d85a1dd7450c74f0ba2c04612d7a834aa0cf209b`; immutable public source was `acad50062fe6b9b3b36ae7a13d356a1209a979d2`.
+[October 6 observations](https://lab.psychoagent.com/evidence.html) and [redacted JSON](public/owner-observations.json) demonstrate the older fixed-host fixture-label classifier, not unsigned calldata decoding. Its tested workspace was `d85a1ddc7bb9cd1cc6a13b4d5db95474228f1fe9`; immutable public source was `acad500cabe86be373481fe66e505f432ae906db`.
+
+Correction (October 16): the two October 6 revision IDs above were previously copied incorrectly in this README. They now match the published observation record; the observations themselves have not changed.
 
 The JSON-label Flow performs a manual trigger, fixed-host HTTP GET, bounded deterministic script classification and explicit End outputs. It is real Maestro execution, but not browser automation or a signed wallet action. `uipath/workflows.json` defines the bounded owner inputs and output allowlists for both workflows.
 
@@ -70,7 +72,20 @@ npx playwright install chromium
 npm run test:browser
 ```
 
-The suites start ephemeral local servers and exercise desktop, mobile and 320px layouts, copy and clear, invalid input recovery, share-link reload/history, no-JavaScript fallback, request privacy, dated evidence and automated accessibility. Use `CONSENT_GAP_BASE_URL` to test a deployment without starting Cloud jobs. Automated accessibility passes are not certification.
+The Chromium suites start ephemeral local servers and exercise desktop, mobile and 320px layouts, copy and clear, invalid input recovery, share-link reload/history, no-JavaScript fallback, request privacy, dated evidence and automated accessibility. Use `CONSENT_GAP_BASE_URL` to test a deployment without starting Cloud jobs. Automated accessibility passes are not certification.
+
+### Cross-engine compatibility
+
+```sh
+npx playwright install chromium firefox webkit
+npm run test:cross-engine
+```
+
+This separate check covers Chromium, Firefox and WebKit at 1280, 390 and 320px: the spender walkthrough, independent amount/address results, error recovery, clipboard-denial fallback, keyboard submit/clear, the fixed share lesson and evidence disclosure with JavaScript disabled. It checks horizontal overflow, page errors, failed/off-origin requests and request-free local input handling. Selected engines must be installed; failures do not silently skip coverage. This is not a physical-device, native clipboard-permission, accessibility or UiPath Cloud test.
+
+Reports and screenshots go to an OS temporary directory or `TEST_REPORT_DIR=/tmp/my-consent-gap-report`, never `public/`. `CONSENT_GAP_BASE_URL=https://lab.psychoagent.com` tests the deployment. Reports distinguish checkout revision/dirty state from tested URL; a remote result does not prove matching deployed source. `CONSENT_GAP_BROWSER=firefox` explicitly narrows coverage to one engine; all three viewport widths still run.
+
+Unit tests also check README revision IDs against each published evidence family, rejecting changed/wrong-family IDs. This prevents documentation drift, not independent attestation of a UiPath run.
 
 ## Inspect and reproduce the UiPath Flows
 
@@ -88,7 +103,7 @@ uip maestro flow validate uipath/ConsentGapSolution/ConsentGap/Psycho_ConsentGap
 uip maestro flow pack uipath/ConsentGapSolution/ConsentGap /tmp/consent-gap-pack --name Psycho.ConsentGap --version 1.0.0
 ```
 
-Local validation and packing require no login and prove package mechanics, not Cloud execution. For the unsigned Flow's four-case rehearsal, version 1.1.1 package and twelve-output Cloud contract, use [UNSIGNED-APPROVAL.md](UNSIGNED-APPROVAL.md). Its new expected-spender comparison has local proof only; the October 12 Cloud observations above retain their original twelve outputs and source revision. Cloud reproduction needs your own suitable UiPath tenant and license. Public execution remains disabled; feedback is not execution permission.
+Local validation and packing require no login and prove package mechanics, not Cloud execution. For the unsigned Flow's four-case rehearsal, version 1.1.1 package and twelve-output Cloud contract, use [UNSIGNED-APPROVAL.md](UNSIGNED-APPROVAL.md). The [October 15 owner-run spender evidence](https://lab.psychoagent.com/spender-evidence.html) records two verified HTTP-fixture inputs for that version, not proof of the browser inspector or a wallet journey. The October 12 Cloud observations above retain their original twelve outputs and source revision. Cloud reproduction needs your own suitable UiPath tenant and license. Public execution remains disabled.
 
 ## Safety and operating boundaries
 
