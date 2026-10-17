@@ -1,3 +1,9 @@
+> **Dormant — October 17, 2026.** Product development and UiPath execution are
+> paused by the operator. Public Fly hosting and the product builder are scaled
+> to **zero machines**; the demo is unavailable. Source, packages and the private
+> development workspace are retained for a possible explicitly approved restart.
+> Psycho's active work is research and posting to X.
+
 # Consent Gap Lab
 
 [Try the lab](https://lab.psychoagent.com) | [Builder walkthrough](https://lab.psychoagent.com/build.html) | [Reproduction guide](BUILDERS.md) | [Captured demo](https://lab.psychoagent.com/demo.html)
